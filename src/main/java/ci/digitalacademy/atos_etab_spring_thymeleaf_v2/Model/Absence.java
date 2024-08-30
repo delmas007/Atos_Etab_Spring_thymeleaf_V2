@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class Absence {
     private Date absenceDate;
-    private int absenceNumber;
+    private Long absenceNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Student student;
