@@ -14,5 +14,5 @@ public class StudentCardDTO {
     private String reference;
     private Date issueDate;
     private Date expirationDate;
-    private Set<Student> student;
+    private Student student;
 }

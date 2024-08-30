@@ -12,4 +12,6 @@ public interface AppSettingService {
     void delete(Long id);
     List<AppSettingDTO> getAll();
     Optional<AppSettingDTO> findOne(Long id);
+
+    List<AppSettingDTO>findAllBySmtpUsernames(String smtpUsername);
 }

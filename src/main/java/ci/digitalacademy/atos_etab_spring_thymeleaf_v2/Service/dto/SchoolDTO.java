@@ -13,6 +13,5 @@ public class SchoolDTO {
     private Long id;
     private String name;
     private String logo;
-    private User user;
     private AppSetting appSetting;
 }

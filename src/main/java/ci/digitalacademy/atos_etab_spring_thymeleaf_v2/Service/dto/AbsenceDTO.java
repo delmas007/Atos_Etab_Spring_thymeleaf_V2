@@ -11,6 +11,7 @@ import java.util.Date;
 @Getter
 @Setter
 public class AbsenceDTO {
+    private Long id;
     private Date absenceDate;
     private Long absenceNumber;
     private Student student;

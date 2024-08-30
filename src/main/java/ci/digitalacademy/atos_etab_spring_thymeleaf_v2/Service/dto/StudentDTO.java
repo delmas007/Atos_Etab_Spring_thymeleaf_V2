@@ -8,14 +8,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 public class StudentDTO extends PersonDTO {
     private String matricule;
     private String phoneNumberFather;
-    private StudentCards studentCards;
-    private List<Absence> absences;
-    private Absence absence;
-    private StudentCards studentCard;
+    private Set<Absence> absence;
 }

@@ -5,6 +5,7 @@ import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Service.AppSettingService
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Service.Mapper.AppSettingMapper;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Service.dto.AppSettingDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AppSettingServiceImp implements AppSettingService {
     private final AppSettingRepository appSettingRepository;
     private final AppSettingMapper appSettingMapper;
@@ -23,8 +25,8 @@ public class AppSettingServiceImp implements AppSettingService {
     @Override
     public AppSettingDTO update(AppSettingDTO appSettingDTO) {
         return findOne(appSettingDTO.getId()).map(existingAppSetting -> {
-            existingAppSetting.setSmtpPort(appSettingDTO.getSmtpPort());
-            existingAppSetting.setSmtpServer(appSettingDTO.getSmtpServer());
+            existingAppSetting.setSmtp_Password(appSettingDTO.getSmtp_Password());
+            existingAppSetting.setSmtp_Port(appSettingDTO.getSmtp_Port());
             return save(existingAppSetting);
         }).orElseThrow(() -> new RuntimeException("AppSetting not found"));
     }
@@ -46,5 +48,13 @@ public class AppSettingServiceImp implements AppSettingService {
         return appSettingRepository.findById(id).map(address -> {
             return appSettingMapper.fromEntity(address);
         });
+    }
+
+    @Override
+    public List<AppSettingDTO> findAllBySmtpUsernames(String smtpUsername) {
+        log.debug("Request to get all AppSetting by smtpUsername : {}", smtpUsername);
+        return appSettingRepository.findBySmtp_Username(smtpUsername).stream().map(appSetting -> {
+            return appSettingMapper.fromEntity(appSetting);
+        }).toList();
     }
 }
