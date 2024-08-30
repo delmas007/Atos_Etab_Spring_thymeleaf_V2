@@ -6,8 +6,22 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
+@Getter
+@Setter
+//@NoArgsConstructor
+//@AllArgsConstructor
+@Entity
+//@Builder
+//@MappedSuperclass
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+//@DiscriminatorColumn(name = "person_type")
+//@Table(name = "person")
 public abstract class Person {
-    private Long id;
+    @Id
+//    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id ;
+
     private Date birthday;
     private String firstName;
     private String lastName;
