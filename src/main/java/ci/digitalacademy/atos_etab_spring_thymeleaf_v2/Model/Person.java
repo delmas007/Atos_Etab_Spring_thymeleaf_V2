@@ -4,36 +4,39 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
+import java.time.Instant;
 import java.util.Date;
 
 @Getter
 @Setter
-//@NoArgsConstructor
-//@AllArgsConstructor
 @Entity
-//@Builder
-//@MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-//@DiscriminatorColumn(name = "person_type")
-//@Table(name = "person")
-public abstract class Person {
+public abstract class Person implements Serializable {
     @Id
-//    @GeneratedValue(strategy = GenerationType.TABLE)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id ;
 
-    private Date birthday;
+    @Column(name = "birthday")
+    private Instant birthday;
+
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
+
+    @Column(unique = true,name = "phone_number")
     private String phoneNumber;
+
+    @Column(name = "url_picture")
     private String urlPicture;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(value=EnumType.STRING)
     private Gender gender;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private User user;
 }

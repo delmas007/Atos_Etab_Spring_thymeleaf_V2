@@ -6,7 +6,12 @@ import lombok.*;
 
 import java.util.Set;
 
-
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity
 public class Teacher extends Person {
 
 

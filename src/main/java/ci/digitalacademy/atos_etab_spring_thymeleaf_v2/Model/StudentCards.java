@@ -11,5 +11,5 @@ public class StudentCards {
     private Date expirationDate;
 
     @ManyToOne
-    private Set<Student> student;
+    private Student student;
 }

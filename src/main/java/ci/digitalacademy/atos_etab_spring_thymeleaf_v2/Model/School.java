@@ -3,6 +3,8 @@ package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 
 @Getter
 @Setter
@@ -18,9 +20,6 @@ public class School {
     private String name;
     private String logo;
 
-    @OneToMany
-    private User user;
-
-    @OneToOne(mappedBy = "school")
+    @OneToOne
     private AppSetting appSetting;
 }

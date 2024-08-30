@@ -4,18 +4,22 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
-
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity
 public class Student extends Person  {
     private String matricule;
     private String phoneNumberFather;
 
-    private StudentCards studentCards;
-    private List<Absence> absences;
 
-    @OneToMany(mappedBy = "student",fetch = FetchType.LAZY)
-    private Absence absence;
+    @OneToMany(mappedBy = "student")
+    private Set<Absence> absence;
 
-    @OneToMany
-    private StudentCards studentCard;
+
 }

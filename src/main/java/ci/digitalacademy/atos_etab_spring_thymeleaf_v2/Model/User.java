@@ -4,15 +4,16 @@ package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.Instant;
 import java.util.Date;
 import java.util.Set;
 
-
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity
+public class User extends Person{
 
     private String pseudo;
     private String password;
@@ -20,10 +21,10 @@ public class User {
     @Temporal(TemporalType.DATE)
     private Date creationDate;
 
-    @OneToMany
-    private RoleUser roleUser;
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<RoleUser> roleUser;
 
     @ManyToOne
-    private Set<School> school;
+    private School school;
 
 }
