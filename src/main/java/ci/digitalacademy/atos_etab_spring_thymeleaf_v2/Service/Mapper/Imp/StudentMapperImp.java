@@ -1,8 +1,8 @@
 package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Service.Mapper.Imp;
 
-import ci.digitalacademy.monetab.Model.Student;
-import ci.digitalacademy.monetab.Service.Mapper.StudentMapper;
-import ci.digitalacademy.monetab.Service.dto.StudentDTO;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Model.Student;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Service.Mapper.StudentMapper;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Service.dto.StudentDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
