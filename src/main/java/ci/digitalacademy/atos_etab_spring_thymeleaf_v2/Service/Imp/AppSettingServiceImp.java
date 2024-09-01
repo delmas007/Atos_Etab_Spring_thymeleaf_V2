@@ -53,7 +53,7 @@ public class AppSettingServiceImp implements AppSettingService {
     @Override
     public List<AppSettingDTO> findAllBySmtpUsernames(String smtpUsername) {
         log.debug("Request to get all AppSetting by smtpUsername : {}", smtpUsername);
-        return appSettingRepository.findBySmtp_Username(smtpUsername).stream().map(appSetting -> {
+        return appSettingRepository.findBySmtpUsername(smtpUsername).stream().map(appSetting -> {
             return appSettingMapper.fromEntity(appSetting);
         }).toList();
     }

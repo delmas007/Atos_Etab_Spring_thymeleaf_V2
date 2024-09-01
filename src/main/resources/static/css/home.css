@@ -1,0 +1,119 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Archivo Black", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    display: flex;
+    height: 100vh;
+    background-color: #E0E0E0;
+}
+
+.sidebar {
+    background-color: #E0E0E0;
+    width: 250px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    text-align: center;
+    display: flex;
+}
+
+.logo img {
+    width: 50px;
+    height: 50px;
+}
+
+.logo h2 {
+    margin-top: 10px;
+    color: #333;
+}
+
+.menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.menu li {
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #555;
+    cursor: pointer;
+}
+
+.icon {
+    margin-right: 10px;
+}
+
+.logout {
+    margin-top: auto;
+    color: #333;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.main-content {
+    flex: 1;
+    padding: 40px;
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.stat-box {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.stat-box h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #333;
+}
+
+.stat-box p {
+    font-size: 32px;
+    color: #000;
+}
+
+.stat-box canvas {
+    width: 100% !important;
+    height: 200px !important;
+    display: block;
+}
+
+.menu li.active,
+.menu li:hover,
+.menu li.active a,
+.menu li:hover a {
+    color: #000;
+    font-weight: bold;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #555555;
+}
+
+.logout a {
+    text-decoration: none;
+    color: #1F1F1F;
+}

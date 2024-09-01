@@ -14,23 +14,21 @@ import java.io.Serializable;
 @Entity
 public class AppSetting implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "smtp_server")
-    private String smtp_Server;
+    private String smtpServer;
 
     @Column(name = "smtp_port")
-    private int smtp_Port;
+    private int smtpPort;
 
     @Column(name = "smtp_username")
-    private String smtp_Username;
+    private String smtpUsername;
 
     @Column(name = "smtp_password")
-    private String smtp_Password;
+    private String smtpPassword;
 
     @OneToOne(mappedBy = "appSetting")
     private School school;

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<title>repport</title>
+<link rel="stylesheet" href="../css/rapport/rapport.css">
+<head th:insert="~{fragments/fragment :: head}">
+</head>
+<body>
+<div  th:insert="~{fragments/fragment :: sidebar}"></div>
+
+<div class="main-content">
+    <main>
+        <h2>Rapport</h2>
+        <form id="addStudentForm">
+            <div class="form-row">
+            </div>
+            <div class="form-row">
+                    <select id="rapport" required>
+                        <option value="">Sélectionner une option</option>
+                        <option value="Liste des eleves">Liste des eleves</option>
+                        <option value="Liste des professeurs">Liste des professeurs</option>
+                        <option value="Liste des utilisateurs">Liste des utilisateurs</option>
+                    </select>
+                <button type="button" class="btn-cancel">Generer format PDF</button>
+                <button type="submit" class="btn-save">Generer format Excel</button>
+            </div>
+        </form>
+    </main>
+</div>
+
+<th:block th:insert="~{fragments/fragment :: script-modal}"></th:block>
+</body>
+</html>

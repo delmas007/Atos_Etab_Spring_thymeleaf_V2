@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<title>Student</title>
+<link rel="stylesheet" href="../css/eleve/ajouter.css">
+<head th:insert="~{fragments/fragment :: head}">
+</head>
+<body>
+<div  th:insert="~{fragments/fragment :: sidebar}"></div>
+
+<div class="main-content">
+    <main>
+        <div class="retour-container">
+            <a th:href="@{/students}" class="retour">← Retour</a>
+        </div>
+
+        <h2 th:text="${student.id == null}?'Ajouter eleve':'Modifier eleve'"></h2>
+        <form id="addStudentForm" th:object="${student}" th:action="@{/students}" method="post">
+            <input type="text" th:field="*{id}" hidden>
+            <div class="form-row">
+                <input type="text" th:field="*{nom}" id="nom" placeholder="Nom" required>
+                <input type="text" th:field="*{prenom}" id="prenom" placeholder="Prénom" required>
+            </div>
+            <div class="form-row">
+                <input type="text" th:field="*{matricule}" id="matricule" placeholder="matricule" required>
+            </div>
+            <div class="form-row">
+                <select id="classe" required th:field="*{classe}">
+                    <option value="1ere">1ère</option>
+                    <option value="2eme">2ème</option>
+                    <option value="3eme">3ème</option>
+                    <option value="4eme">4ème</option>
+                    <option value="5eme">5ème</option>
+                    <option value="6eme">6ème</option>
+                </select>
+                <input type="date" id="dateNaissance" required th:field="*{dateNaissance}">
+            </div>
+
+            <div class="form-row">
+                <input type="number" id="telephone" placeholder="Téléphone" th:field="*{telephone}">
+                <input type="email" id="email" th:field="*{email}" placeholder="email">
+            </div>
+            <div class="form-row">
+                <input type="text" th:field="*{address.country}"  placeholder="Pays" required>
+                <input type="text" th:field="*{address.city}"  placeholder="Ville" required>
+                <input type="text" th:field="*{address.street}"  placeholder="Rue" required>
+            </div>
+            <div class="form-row buttons">
+                <button type="button" class="btn-cancel">Annuler</button>
+                <button type="submit" class="btn-save">Enregistrer</button>
+            </div>
+        </form>
+    </main>
+</div>
+
+<th:block th:insert="~{fragments/fragment :: script-modal}"></th:block>
+</body>
+</html>

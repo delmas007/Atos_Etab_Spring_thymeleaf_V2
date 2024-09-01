@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Etab - Login</title>
+    <link rel="stylesheet" href="../css/connexion.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+</head>
+<body>
+<div class="login-container">
+    <div class="login-box">
+        <div class="logo-container" style="margin-bottom: 20px">
+            <img th:src="@{icon/etablissement.png}"  style="width: 80px;height: 80px;margin-left: 75px" alt="Mon Etab Logo">
+            <h2>Mon Etab</h2>
+        </div>
+
+        <form>
+            <input type="text" placeholder="Identifiant" required>
+            <input type="password" placeholder="Mot de passe" required>
+<!--            <button type="submit">Connexion</button>-->
+            <a class="button" th:href="@{/dashbord}">Connexion</a>
+        </form>
+    </div>
+</div>
+<script src="js/Home.js"></script>
+</body>
+</html>

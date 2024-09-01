@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<title>Student-list</title>
+<link rel="stylesheet" href="../css/eleve/lister.css">
+<head th:insert="~{fragments/fragment :: head}">
+</head>
+<body>
+<div  th:insert="~{fragments/fragment :: sidebar}"></div>
+
+<div class="main-content">
+    <main>
+        <header class="header">
+            <h1>Élèves (<span th:text="${students.size()}"></span>)</h1>
+            <a th:href="@{/students/add}"> <img th:src="@{../icon/plus.png}" style="width: 10px;height: 10px" alt=""> Nouvel élève</a>
+        </header>
+        <section class="table-section">
+            <table>
+                <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Classe</th>
+                    <th>Matricule</th>
+                    <th>Téléphone</th>
+                    <th>Rue</th>
+                    <th>Pays</th>
+                    <th>Ville</th>
+                    <th>Date de naissance</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="student:${students}">
+                    <td th:text="${student.nom}"></td>
+                    <td th:text="${student.prenom}"></td>
+                    <td th:text="${student.classe}"></td>
+                    <td th:text="${student.getMatricule()}"></td>
+                    <td th:text="${student.telephone}"></td>
+                    <td th:text="${student.address != null ? student.address.street : 'non defini'}"></td>
+                    <td th:text="${student.address != null ? student.address.city : 'non defini'}"></td>
+                    <td th:text="${student.address != null ? student.address.country : 'non defini'}"></td>
+                    <td th:text="${#dates.format(student.dateNaissance, 'dd MMMM yyyy')}"></td>
+                    <td th:text="${student.getEmail()}"></td>
+                    <td>
+                        <a th:href="@{/students/{id}(id=${student.id})}">
+                            <button class="edit-btn">Modifier</button>
+                        </a>
+                        <form th:action="@{/students/delete/{id}(id=${student.id})}" method="post" style="display:inline;">
+                            <button type="submit" class="delete-btn">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+</div>
+<!-- Modal de confirmation -->
+<div id="confirmationModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>ATTENTION !!!</h2>
+        </div>
+        <div class="modal-body">
+            <p>Voulez-vous supprimer cet élève ?</p>
+        </div>
+        <div class="modal-footer">
+            <button id="confirmYes" class="modal-btn yes-btn">Oui</button>
+            <button id="confirmNo" class="modal-btn no-btn">Non</button>
+        </div>
+    </div>
+</div>
+
+<th:block th:insert="~{fragments/fragment :: script-modal}"></th:block>
+</body>
+</html>

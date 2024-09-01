@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<title>Professor</title>
+<link rel="stylesheet" href="../css/professeur/ajouter.css">
+<head th:insert="~{fragments/fragment :: head}">
+</head>
+<body>
+<div  th:insert="~{fragments/fragment :: sidebar}"></div>
+
+<div class="main-content">
+    <main>
+        <div class="retour-container">
+            <a th:href="@{/professors}" class="retour">← Retour</a>
+        </div>
+        <h2 th:text="${professor.id == null}?'Ajouter professeur':'Modifier Professeur'"></h2>
+        <form id="addStudentForm" th:object="${professor}" th:action="@{/professors}" method="post">
+            <input type="text" th:field="*{id}" hidden>
+            <div class="form-row">
+                <input type="text" th:field="*{nom}" id="nom" placeholder="Nom" required>
+                <input type="text" th:field="*{prenom}" id="prenom" placeholder="Prénom" required>
+            </div>
+            <div class="form-row">
+                <div>
+                    <label >Vacant :</label>
+                </div>
+                <div class="radio-group" >
+                    <label><input type="radio" th:field="*{vacant}" name="vacant" value="true"  required> oui</label>
+                    <label><input type="radio" th:field="*{vacant}" name="vacant" value="false" required> non</label>
+                </div>
+            </div>
+            <div class="form-row">
+                    <select id="classe" required th:field="*{matiereEnseigne}">
+                        <option value="Math">Math</option>
+                        <option value="Physique">Physique</option>
+                        <option value="EPS">EPS</option>
+                        <option value="Anglais">Anglais</option>
+                        <option value="SVT">SVT</option>
+                        <option value="Philosophie">Philosophie</option>
+                        <option value="Français">Français</option>
+                    </select>
+                <input type="date" id="dateNaissance" required th:field="*{dateNaissance}">
+            </div>
+
+            <div class="form-row">
+                <input type="number" id="telephone" placeholder="Téléphone" th:field="*{telephone}">
+                <input type="email" id="email" th:field="*{email}" placeholder="email">
+            </div>
+            <div class="form-row">
+                <input type="text" th:field="*{address.country}"  placeholder="Pays" required>
+                <input type="text" th:field="*{address.city}"  placeholder="Ville" required>
+                <input type="text" th:field="*{address.street}"  placeholder="Rue" required>
+            </div>
+            <div class="form-row buttons">
+                <button type="button" class="btn-cancel">Annuler</button>
+                <button type="submit" class="btn-save">Enregistrer</button>
+            </div>
+        </form>
+    </main>
+</div>
+
+<th:block th:insert="~{fragments/fragment :: script-modal}"></th:block>
+</body>
+</html>

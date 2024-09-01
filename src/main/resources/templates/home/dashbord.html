@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<title>Tableau de Bord - Mon Etab</title>
+<link rel="stylesheet" href="css/home.css">
+<head th:insert="~{fragments/fragment :: head}">
+</head>
+<body>
+<div  th:insert="~{fragments/fragment :: sidebar}"></div>
+
+<div class="main-content">
+    <h1>Tableau de bord</h1>
+    <div class="stats-grid">
+        <div class="stat-box">
+            <h3>Nombre d'élève</h3>
+            <p>128 100</p>
+        </div>
+        <div class="stat-box">
+            <h3>Nombre de professeur</h3>
+            <p>128 100</p>
+        </div>
+        <div class="stat-box">
+            <h3>Nombre d'utilisateur</h3>
+            <p>128 100</p>
+        </div>
+        <div class="stat-box">
+            <h3>Élève par genre</h3>
+            <div style="height: 200px;">
+                <canvas id="genderChart"></canvas>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<th:block th:insert="~{fragments/fragment :: script}"></th:block>
+</body>
+</html>
