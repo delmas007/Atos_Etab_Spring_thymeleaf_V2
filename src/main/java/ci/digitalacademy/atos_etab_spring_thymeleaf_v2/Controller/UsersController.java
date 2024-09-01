@@ -51,6 +51,7 @@ public class UsersController {
     @PostMapping
     public String saveUser(UserDTO user){
 //        user.setCreationDate(Instant.now());
+
         userService.save(user);
         return "redirect:/users";
     }

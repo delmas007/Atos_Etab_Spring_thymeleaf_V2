@@ -13,8 +13,11 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @Entity
-public class User extends Person{
+public class User{
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id ;
     private String pseudo;
     private String password;
 

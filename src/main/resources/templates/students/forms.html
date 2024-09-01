@@ -20,32 +20,54 @@
         <form id="addStudentForm" th:object="${student}" th:action="@{/students}" method="post">
             <input type="text" th:field="*{id}" hidden>
             <div class="form-row">
-                <input type="text" th:field="*{nom}" id="nom" placeholder="Nom" required>
-                <input type="text" th:field="*{prenom}" id="prenom" placeholder="Prénom" required>
+                <input type="text" th:field="*{firstName}" id="nom" placeholder="Nom" required>
+                <input type="text" th:field="*{lastName}" id="prenom" placeholder="Prénom" required>
             </div>
             <div class="form-row">
                 <input type="text" th:field="*{matricule}" id="matricule" placeholder="matricule" required>
             </div>
             <div class="form-row">
-                <select id="classe" required th:field="*{classe}">
-                    <option value="1ere">1ère</option>
-                    <option value="2eme">2ème</option>
-                    <option value="3eme">3ème</option>
-                    <option value="4eme">4ème</option>
-                    <option value="5eme">5ème</option>
-                    <option value="6eme">6ème</option>
-                </select>
-                <input type="date" id="dateNaissance" required th:field="*{dateNaissance}">
+                <div>
+                    <label>Genre :</label>
+                </div>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" th:field="*{gender}" value="MALE" required> Homme
+                    </label>
+                    <label>
+                        <input type="radio" th:field="*{gender}" value="FEMALE" required> Femme
+                    </label>
+                    <label>
+                        <input type="radio" th:field="*{gender}" value="OTHER" required> Autre
+                    </label>
+                </div>
             </div>
 
+            <!--            <div class="form-row">-->
+<!--                <select id="classe" required th:field="*{classe}">-->
+<!--                    <option value="1ere">1ère</option>-->
+<!--                    <option value="2eme">2ème</option>-->
+<!--                    <option value="3eme">3ème</option>-->
+<!--                    <option value="4eme">4ème</option>-->
+<!--                    <option value="5eme">5ème</option>-->
+<!--                    <option value="6eme">6ème</option>-->
+<!--                </select>-->
+<!--                <input type="date" id="dateNaissance" required th:field="*{dateNaissance}">-->
+<!--            </div>-->
+
             <div class="form-row">
-                <input type="number" id="telephone" placeholder="Téléphone" th:field="*{telephone}">
-                <input type="email" id="email" th:field="*{email}" placeholder="email">
+                <input type="number" id="telephone" placeholder="numero du pere" th:field="*{phoneNumberFather}">
+                <input type="number"  placeholder="numero" th:field="*{phoneNumber}">
+                <input type="date" required th:field="*{birthday}">
             </div>
             <div class="form-row">
                 <input type="text" th:field="*{address.country}"  placeholder="Pays" required>
                 <input type="text" th:field="*{address.city}"  placeholder="Ville" required>
                 <input type="text" th:field="*{address.street}"  placeholder="Rue" required>
+            </div>
+            <div class="form-row">
+                <input type="text" th:field="*{user.pseudo}"  placeholder="Nom d'utilisateur" required>
+                <input type="text" th:field="*{user.password}"  placeholder="Mot de passe" required>
             </div>
             <div class="form-row buttons">
                 <button type="button" class="btn-cancel">Annuler</button>

@@ -22,29 +22,31 @@
                 <tr>
                     <th>Nom</th>
                     <th>Prénom</th>
-                    <th>Classe</th>
+<!--                    <th>Classe</th>-->
                     <th>Matricule</th>
+                    <th>Téléphone du pere</th>
                     <th>Téléphone</th>
                     <th>Rue</th>
                     <th>Pays</th>
                     <th>Ville</th>
                     <th>Date de naissance</th>
-                    <th>Email</th>
+<!--                    <th>Email</th>-->
                     <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="student:${students}">
-                    <td th:text="${student.nom}"></td>
-                    <td th:text="${student.prenom}"></td>
-                    <td th:text="${student.classe}"></td>
+                    <td th:text="${student.firstName}"></td>
+                    <td th:text="${student.lastName}"></td>
+<!--                    <td th:text="${student.classe}"></td>-->
                     <td th:text="${student.getMatricule()}"></td>
-                    <td th:text="${student.telephone}"></td>
+                    <td th:text="${student.phoneNumberFather}"></td>
+                    <td th:text="${student.phoneNumber}"></td>
                     <td th:text="${student.address != null ? student.address.street : 'non defini'}"></td>
                     <td th:text="${student.address != null ? student.address.city : 'non defini'}"></td>
                     <td th:text="${student.address != null ? student.address.country : 'non defini'}"></td>
-                    <td th:text="${#dates.format(student.dateNaissance, 'dd MMMM yyyy')}"></td>
-                    <td th:text="${student.getEmail()}"></td>
+                    <td th:text="${student.birthday}"></td>
+<!--                    <td th:text="${student.getEmail()}"></td>-->
                     <td>
                         <a th:href="@{/students/{id}(id=${student.id})}">
                             <button class="edit-btn">Modifier</button>

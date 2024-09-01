@@ -13,8 +13,6 @@ import java.util.Set;
 @Builder
 @Entity
 public class Teacher extends Person {
-
-
     private boolean available;
     private String specialty;
 }

@@ -6,19 +6,21 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
 @Setter
-@Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+//@Entity
+//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@MappedSuperclass
 public abstract class Person implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id ;
 
     @Column(name = "birthday")
-    private Instant birthday;
+    private LocalDate birthday;
 
     @Column(name = "first_name")
     private String firstName;
@@ -34,9 +36,9 @@ public abstract class Person implements Serializable {
     @Enumerated(value=EnumType.STRING)
     private Gender gender;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Address address;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private User user;
 }

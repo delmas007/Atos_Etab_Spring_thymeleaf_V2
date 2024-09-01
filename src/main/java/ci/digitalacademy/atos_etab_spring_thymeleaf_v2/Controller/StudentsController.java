@@ -1,5 +1,6 @@
 package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Controller;
 
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Repository.AddressRepository;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Service.StudentService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Service.dto.StudentDTO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +21,8 @@ import java.util.Optional;
 public class StudentsController {
 
     private final StudentService studentService;
+
+    private final AddressRepository addressRepository;
 
     @GetMapping("/add")
     public String showAddStudentPage(HttpServletRequest request, Model model){
@@ -47,7 +50,8 @@ public class StudentsController {
 
     @PostMapping
     public String saveStudent(StudentDTO student){
-        studentService.save(student);
+        StudentDTO save = studentService.save(student);
+        System.out.println("save = " + save);
         return "redirect:/students";
     }
 

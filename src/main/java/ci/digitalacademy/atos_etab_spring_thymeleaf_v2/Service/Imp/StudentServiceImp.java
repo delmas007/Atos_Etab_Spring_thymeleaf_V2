@@ -2,6 +2,7 @@ package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Service.Imp;
 
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Repository.StudentRepository;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Service.Mapper.StudentMapper;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Service.Mapper.StudentMapperr;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Service.StudentService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Service.dto.StudentDTO;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.Optional;
 public class StudentServiceImp implements StudentService {
 
     private final StudentRepository studentRepository;
-    private final StudentMapper studentMapper;
+    private final StudentMapperr studentMapper;
 
     @Override
     public StudentDTO save(StudentDTO studentDTO) {
