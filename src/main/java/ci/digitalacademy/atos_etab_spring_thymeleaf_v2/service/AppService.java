@@ -6,6 +6,7 @@ import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.SchoolDTO;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.UserDTO;
 
 import java.util.List;
+import java.util.Set;
 
 public interface AppService {
 
