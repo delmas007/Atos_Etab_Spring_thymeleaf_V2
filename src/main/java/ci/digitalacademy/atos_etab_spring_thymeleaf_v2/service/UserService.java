@@ -11,4 +11,5 @@ public interface UserService {
     void delete(Long id);
     List<UserDTO> getAll();
     Optional<UserDTO> findOne(Long id);
+    List<UserDTO> initUser(List<UserDTO> UserDTO);
 }

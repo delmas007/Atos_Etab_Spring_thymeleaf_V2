@@ -22,7 +22,7 @@ public class AppSetting implements Serializable {
     private String smtpServer;
 
     @Column(name = "smtp_port")
-    private int smtpPort;
+    private Long smtpPort;
 
     @Column(name = "smtp_username")
     private String smtpUsername;

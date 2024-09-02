@@ -15,6 +15,6 @@ public class UserDTO {
     private String pseudo;
     private String password;
     private Date creationDate;
-    private Set<RoleUser> roleUser;
-    private School school;
+    private Set<RoleUserDTO> roleUser;
+    private SchoolDTO school;
 }

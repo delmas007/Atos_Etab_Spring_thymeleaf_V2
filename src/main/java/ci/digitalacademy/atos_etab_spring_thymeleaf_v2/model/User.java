@@ -24,7 +24,7 @@ public class User{
     @Temporal(TemporalType.DATE)
     private Date creationDate;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<RoleUser> roleUser;
 
     @ManyToOne
