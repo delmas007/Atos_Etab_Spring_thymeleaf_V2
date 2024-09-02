@@ -14,6 +14,12 @@
     <main>
         <header class="header">
             <h1>Professor (<span th:text="${professors.size()}"></span>)</h1>
+            <form>
+                <div class="form-row">
+                    <input type="text" placeholder="Rechercher un professeur">
+                    <button type="submit" class="edit-btn">Rechercher</button>
+                </div>
+            </form>
             <a th:href="@{/professors/add}"> <img th:src="@{../icon/plus.png}" style="width: 10px;height: 10px" alt=""> Nouveau profeseur</a>
         </header>
         <section class="table-section">

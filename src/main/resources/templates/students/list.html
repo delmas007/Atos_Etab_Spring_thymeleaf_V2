@@ -14,6 +14,12 @@
     <main>
         <header class="header">
             <h1>Élèves (<span th:text="${students.size()}"></span>)</h1>
+            <form>
+                <div class="form-row">
+                    <input type="text" placeholder="Rechercher un élève">
+                    <button type="submit" class="edit-btn">Rechercher</button>
+                </div>
+            </form>
             <a th:href="@{/students/add}"> <img th:src="@{../icon/plus.png}" style="width: 10px;height: 10px" alt=""> Nouvel élève</a>
         </header>
         <section class="table-section">
