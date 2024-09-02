@@ -17,7 +17,7 @@
 <div class="main-content">
     <main>
         <h2>Ajouter parametre SMTP</h2>
-        <form id="addStudentForm" th:object="${setting}" th:action="@{/professors}" method="post">
+        <form id="addStudentForm" th:object="${setting}" th:action="@{/PostSettings}" method="post">
             <div class="form-row">
                 <input type="text" th:field="*{smtpUsername}"  placeholder="Nom d'utilisateur" required>
                 <input type="text" th:field="*{smtpPassword}"  placeholder="Mot de passe" required>

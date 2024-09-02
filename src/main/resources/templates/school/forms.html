@@ -17,7 +17,7 @@
 <div class="main-content">
     <main>
         <h2>Ajouter parametre Ecole</h2>
-        <form id="addStudentForm" th:object="${School}" th:action="@{/professors}" method="post">
+        <form id="addStudentForm" th:object="${School}" th:action="@{/PostSchool}" method="post">
             <div class="form-row">
                 <input type="text" th:field="*{name}"  placeholder="Nom" required>
                 <input type="text" th:field="*{logo}"  placeholder="Photo" required>
