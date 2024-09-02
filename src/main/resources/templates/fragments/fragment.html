@@ -23,8 +23,8 @@
             <a  th:href="@{/students}"><img th:src="@{../icon/eleve.png}" style="width: 30px;height: 30px" alt=""> Élèves</a></li>
         <li th:classappend="${currentUrl == '/professors' || currentUrl == '/professors/add' || currentUrl == '/professors/update'} ? 'active'">
             <a th:href="@{/professors}"><img th:src="@{../icon/professeur.png}" style="width: 30px;height: 30px" alt=""> Professeurs</a></li>
-        <li th:classappend="${currentUrl == '/users' || currentUrl == '/users/add' || currentUrl == '/users/update'} ? 'active'">
-            <a  th:href="@{/users}"><img th:src="@{../icon/user.png}" style="width: 30px;height: 30px" alt=""> Utilisateurs</a></li>
+        <li th:classappend="${currentUrl == '/cards' || currentUrl == '/cards/add' || currentUrl == '/cards/update'} ? 'active'">
+            <a  th:href="@{/cards}"><img th:src="@{../icon/card.png}" style="width: 30px;height: 30px" alt=""> Carte Etudiant</a></li>
         <li th:classappend="${currentUrl == '/reports'} ? 'active'">
             <a  th:href="@{/reports}"><img th:src="@{../icon/rapport.png}" style="width: 30px;height: 30px" alt=""> Rapport</a></li>
     </ul>

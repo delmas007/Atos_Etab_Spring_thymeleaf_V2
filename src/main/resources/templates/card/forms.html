@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<title>User</title>
+<link rel="stylesheet" href="../css/utilisateur/ajouter.css">
+<head th:insert="~{fragments/fragment :: head}">
+</head>
+<body>
+<div  th:insert="~{fragments/fragment :: sidebar}"></div>
+
+<div class="main-content">
+    <main>
+        <div class="retour-container">
+            <a th:href="@{/users}" class="retour">← Retour</a>
+        </div>
+        <h2 th:text="${card.id == null}?'Ajouter une carte':'Modifier une carte'"></h2>
+        <form id="addStudentForm" th:object="${card}" th:action="@{/cards}" method="post">
+            <input type="text" th:field="*{id}" hidden>
+            <div class="form-row">
+                <label>Date d'expiration :</label>
+            </div>
+            <div class="form-row">
+                <input type="date" required th:field="*{expirationDate}">
+            </div>
+            <div class="form-row">
+                <select id="student" required th:field="*{student}">
+                    <option value="" disabled selected>Sélectionner un étudiant</option>
+                    <option th:each="student : ${students}"
+                            th:value="${student.id}"
+                            th:text="${student.firstName + ' ' + student.lastName}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-row buttons">
+                <button type="button" class="btn-cancel">Annuler</button>
+                <button type="submit" class="btn-save">Enregistrer</button>
+            </div>
+        </form>
+    </main>
+</div>
+
+<th:block th:insert="~{fragments/fragment :: script-modal}"></th:block>
+</body>
+</html>

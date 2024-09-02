@@ -22,29 +22,31 @@
                 <tr>
                     <th>Nom</th>
                     <th>Prénom</th>
-                    <th>Matiere enseigne</th>
+                    <!--                    <th>Classe</th>-->
+                    <th>Disponibilite</th>
+                    <th>Specialite</th>
                     <th>Téléphone</th>
                     <th>Rue</th>
                     <th>Pays</th>
                     <th>Ville</th>
                     <th>Date de naissance</th>
-                    <th>Email</th>
-                    <th>Vacant</th>
+                    <!--                    <th>Email</th>-->
                     <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="professor:${professors}">
-                    <td th:text="${professor.nom}"></td>
-                    <td th:text="${professor.prenom}"></td>
-                    <td th:text="${professor.matiereEnseigne}"></td>
-                    <td th:text="${professor.telephone}"></td>
+                    <td th:text="${professor.firstName}"></td>
+                    <td th:text="${professor.lastName}"></td>
+                    <!--                    <td th:text="${professor.classe}"></td>-->
+                    <td th:text="${professor.available}"></td>
+                    <td th:text="${professor.specialty}"></td>
+                    <td th:text="${professor.phoneNumber}"></td>
                     <td th:text="${professor.address != null ? professor.address.street : 'non defini'}"></td>
                     <td th:text="${professor.address != null ? professor.address.city : 'non defini'}"></td>
                     <td th:text="${professor.address != null ? professor.address.country : 'non defini'}"></td>
-                    <td th:text="${#dates.format(professor.dateNaissance, 'dd MMMM yyyy')}"></td>
-                    <td th:text="${professor.email}"></td>
-                    <td th:text="${professor.vacant}"></td>
+                    <td th:text="${professor.birthday}"></td>
+                    <!--                    <td th:text="${professor.getEmail()}"></td>-->
                     <td>
                         <a th:href="@{/professors/{id}(id=${professor.id})}">
                             <button class="edit-btn">Modifier</button>
@@ -53,8 +55,6 @@
                             <button type="submit" class="delete-btn">Supprimer</button>
                         </form>
                     </td>
-
-
                 </tr>
                 </tbody>
             </table>

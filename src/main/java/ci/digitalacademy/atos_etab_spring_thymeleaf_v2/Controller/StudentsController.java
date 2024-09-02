@@ -1,8 +1,8 @@
 package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Controller;
 
-import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Repository.AddressRepository;
-import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Service.StudentService;
-import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Service.dto.StudentDTO;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.repository.AddressRepository;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.StudentService;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.StudentDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
