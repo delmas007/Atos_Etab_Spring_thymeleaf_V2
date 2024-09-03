@@ -12,14 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping
 @RequiredArgsConstructor
 public class HomeController {
-    private final SchoolService schoolService;
 
     @GetMapping("/dashbord")
     public String showDahboardPage(HttpServletRequest request, Model model){
 
         String currentUrl = request.getRequestURI();
         model.addAttribute("currentUrl", currentUrl);
-        model.addAttribute("school",schoolService.getAll().stream().findFirst().orElse(null));
         return "home/dashbord";
     }
 }

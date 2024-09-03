@@ -7,7 +7,7 @@
 <head th:insert="~{fragments/fragment :: head}">
 </head>
 <body>
-<div  th:insert="~{fragments/fragment :: sidebar}"></div>
+<div  th:insert="~{fragments/fragment :: sidebar(school=${school})}"></div>
 
 <div class="main-content">
     <main>
