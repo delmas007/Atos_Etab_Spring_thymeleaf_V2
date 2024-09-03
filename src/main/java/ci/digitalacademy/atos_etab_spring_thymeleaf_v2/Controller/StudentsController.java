@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,8 +49,8 @@ public class StudentsController {
 
     @PostMapping
     public String saveStudent(StudentDTO student){
-        StudentDTO save = studentService.save(student);
-        System.out.println("save = " + save);
+        student.getUser().setCreationDate(Date.from(Instant.now()));
+        studentService.save(student);
         return "redirect:/students";
     }
 
@@ -72,9 +74,13 @@ public class StudentsController {
     }
 
     @GetMapping("/search")
-    public String searchStudent(@RequestParam String query,@RequestParam String gender,Model model){
-        List<StudentDTO> studentDTOS =studentService.findByLastNameOrGenderOrMatricule(query,gender);
-        model.addAttribute("students",studentDTOS);
+    public String searchStudents(@RequestParam String query  ,@RequestParam String gender, Model model)
+    {
+        List<StudentDTO> students = studentService.findByLastNameOrGenderOrMatricule(query , gender);
+        model.addAttribute("students", students);
+        model.addAttribute("query", query);
+        model.addAttribute("gender", gender);
+
         return "students/list";
     }
 

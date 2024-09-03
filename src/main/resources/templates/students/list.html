@@ -14,12 +14,17 @@
     <main>
         <header class="header">
             <h1>Élèves (<span th:text="${students.size()}"></span>)</h1>
-<!--            <form method="get" th:action="/students/search">-->
-<!--                <div class="form-row">-->
-<!--                    <input type="search" placeholder="rechercher par nom,genre,matricule" name="query">-->
-<!--                    <button type="submit" class="edit-btn">Rechercher</button>-->
-<!--                </div>-->
-<!--            </form>-->
+            <form method="get" th:action="@{/students/search}">
+                <div class="form-row">
+                    <input type="search" placeholder="RECHERCHE : (NOM , GENRE , MATRICULE)" name="query">
+                    <select name="gender"  class="form-control" th:value="${gender}">
+                        <option value="MAN" th:if="${gender == 'MAN'} ? 'selected':''">HOMME</option>
+                        <option value="WOMAN" th:if="${gender == 'WOMAN'} ? 'selected':''">FEMME</option>
+                        <option value="OTHER" th:if="${gender == 'OTHER'} ? 'selected':''">AUTRE</option>
+                    </select>
+                    <button type="submit" class="edit-btn">Rechercher</button>
+                </div>
+            </form>
             <a th:href="@{/students/add}"> <img th:src="@{../icon/plus.png}" style="width: 10px;height: 10px" alt=""> Nouvel élève</a>
         </header>
         <section class="table-section">

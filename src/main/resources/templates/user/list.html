@@ -14,12 +14,6 @@
     <main>
         <header class="header">
             <h1>User (<span th:text="${users.size()}"></span>)</h1>
-            <form method="get" th:action="/students/search">
-                <div class="form-row">
-                    <input type="search" placeholder="rechercher par nom,genre,matricule" name="query">
-                    <button type="submit" class="edit-btn">Rechercher</button>
-                </div>
-            </form>
             <a th:href="@{/users/add}"> <img th:src="@{../icon/plus.png}" style="width: 10px;height: 10px" alt=""> NouveL Utilisateur</a>
         </header>
         <section class="table-section">

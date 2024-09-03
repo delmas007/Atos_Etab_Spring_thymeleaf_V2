@@ -14,9 +14,14 @@
     <main>
         <header class="header">
             <h1>Professor (<span th:text="${professors.size()}"></span>)</h1>
-            <form>
+            <form method="get" th:action="@{/professors/search}">
                 <div class="form-row">
-                    <input type="search" placeholder="rechercher par nom,genre,specialite">
+                    <input type="search" placeholder="RECHERCHE : (PRENOM , GENRE , MATRICULE)" name="query">
+                    <select name="gender"  class="form-control" th:value="${gender}">
+                        <option value="MAN" th:if="${gender == 'MAN'} ? 'selected':''">HOMME</option>
+                        <option value="WOMAN" th:if="${gender == 'WOMAN'} ? 'selected':''">FEMME</option>
+                        <option value="OTHER" th:if="${gender == 'OTHER'} ? 'selected':''">AUTRE</option>
+                    </select>
                     <button type="submit" class="edit-btn">Rechercher</button>
                 </div>
             </form>

@@ -54,8 +54,8 @@ public class TeacherServiceImp implements TeacherService {
     @Override
     public List<TeacherDTO> findByLastNameOrSpecialtyAndGender(String query,String gender) {
         return teacherRepository.findByLastNameOrSpecialtyAndGender(query,query,Gender.valueOf(gender)).stream().map(
-                address -> {
-                    return teacherMapperr.fromEntity(address);
+                teacher -> {
+                    return teacherMapperr.fromEntity(teacher);
                 }).toList();
     }
 }
