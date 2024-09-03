@@ -1,5 +1,6 @@
 package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Imp;
 
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.model.Gender;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.repository.TeacherRepository;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Mapper.TeatcherMapperr;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.TeacherService;
@@ -48,5 +49,13 @@ public class TeacherServiceImp implements TeacherService {
         return teacherRepository.findById(id).map(address -> {
             return teacherMapperr.fromEntity(address);
         });
+    }
+
+    @Override
+    public List<TeacherDTO> findByLastNameOrSpecialtyAndGender(String query,String gender) {
+        return teacherRepository.findByLastNameOrSpecialtyAndGender(query,query,Gender.valueOf(gender)).stream().map(
+                address -> {
+                    return teacherMapperr.fromEntity(address);
+                }).toList();
     }
 }

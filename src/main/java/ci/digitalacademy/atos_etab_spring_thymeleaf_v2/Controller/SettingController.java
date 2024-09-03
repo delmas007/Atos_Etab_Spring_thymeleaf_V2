@@ -27,7 +27,7 @@ public class SettingController {
     }
 
     @PostMapping("/PostSettings")
-    public String saveStudent(AppSettingDTO appSettingDTO){
+    public String saveSetting(AppSettingDTO appSettingDTO){
         appSettingService.save(appSettingDTO);
         return "redirect:/";
     }

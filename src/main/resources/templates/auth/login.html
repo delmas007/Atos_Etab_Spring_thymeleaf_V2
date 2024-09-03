@@ -16,8 +16,9 @@
 <div class="login-container">
     <div class="login-box">
         <div class="logo-container" style="margin-bottom: 20px">
-            <img th:src="@{icon/etablissement.png}"  style="width: 80px;height: 80px;margin-left: 75px" alt="Mon Etab Logo">
-            <h2>Mon Etab</h2>
+<!--            <img th:src="@{icon/etablissement.png}"  style="width: 80px;height: 80px;margin-left: 75px" alt="Mon Etab Logo">-->
+            <img th:src="${school.logo != null ? school.logo : '@{/icon/etablissement.png}'}"  style="width: 80px;height: 80px;margin-left: 75px" alt="Mon Etab Logo">
+            <h2 th:text="${school.name}"></h2>
         </div>
 
         <form>

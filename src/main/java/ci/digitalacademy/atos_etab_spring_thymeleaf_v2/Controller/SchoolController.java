@@ -3,19 +3,16 @@ package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Controller;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.model.StudentCards;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.AppService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.AppSettingService;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.FileStorageService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.SchoolService;
-import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.AppSettingDTO;
-import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.RoleUserDTO;
-import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.SchoolDTO;
-import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.UserDTO;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,25 +24,38 @@ public class SchoolController {
     private final SchoolService schoolService;
     private final AppSettingService appSettingService;
     private final AppService appService;
+    private final FileStorageService fileStorageService;
 
     @GetMapping("/schools")
     public String showAddCardPage(HttpServletRequest request, Model model){
         String currentUrl = request.getRequestURI();
         model.addAttribute("currentUrl", currentUrl);
-        model.addAttribute("School", new SchoolDTO());
+        model.addAttribute("school", new RegistrationSchoolDto());
         return "school/forms";
     }
+
 
     @PostMapping("/PostSchool")
     public String saveStudent(SchoolDTO schoolDTO){
         AppSettingDTO settingDTO = appSettingService.getAll().stream().findFirst().orElse(null);
         schoolDTO.setAppSetting(settingDTO);
         SchoolDTO save = schoolService.save(schoolDTO);
-        createUser(save);
+        createUserAndRole(save);
         return "redirect:/";
     }
 
-    public void createUser(SchoolDTO school){
+
+//    @PostMapping("/PostSchool")
+//    public String saveSchool(@ModelAttribute RegistrationSchoolDto registrationSchoolDto) throws IOException {
+//        fileStorageService.upload(registrationSchoolDto.getFile());
+//        AppSettingDTO settingDTO = appSettingService.getAll().stream().findFirst().orElse(null);
+//        registrationSchoolDto.setAppSetting(settingDTO);
+//        SchoolDTO save = schoolService.save(registrationSchoolDto);
+//        createUserAndRole(save);
+//        return "redirect:/";
+//    }
+
+    public void createUserAndRole(SchoolDTO school){
         RoleUserDTO roleUserDTO = new RoleUserDTO();
         RoleUserDTO roleUserDTO2= new RoleUserDTO();
         RoleUserDTO roleUserDTO3= new RoleUserDTO();

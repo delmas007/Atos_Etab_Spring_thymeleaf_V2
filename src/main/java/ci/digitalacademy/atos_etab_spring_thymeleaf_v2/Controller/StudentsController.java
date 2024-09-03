@@ -7,10 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -72,6 +69,13 @@ public class StudentsController {
     public String deleteStudent(@PathVariable Long id){
         studentService.delete(id);
         return "redirect:/students";
+    }
+
+    @GetMapping("/search")
+    public String searchStudent(@RequestParam String query,@RequestParam String gender,Model model){
+        List<StudentDTO> studentDTOS =studentService.findByLastNameOrGenderOrMatricule(query,gender);
+        model.addAttribute("students",studentDTOS);
+        return "students/list";
     }
 
 }

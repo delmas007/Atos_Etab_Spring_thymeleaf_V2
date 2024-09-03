@@ -11,4 +11,5 @@ public interface StudentService {
     void delete(Long id);
     List<StudentDTO> getAll();
     Optional<StudentDTO> findOne(Long id);
+    List<StudentDTO> findByLastNameOrGenderOrMatricule(String query, String gender);
 }

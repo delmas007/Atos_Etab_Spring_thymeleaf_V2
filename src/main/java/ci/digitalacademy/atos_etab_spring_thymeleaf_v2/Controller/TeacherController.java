@@ -1,15 +1,13 @@
 package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Controller;
 
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.TeacherService;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.StudentDTO;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.TeacherDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -68,6 +66,13 @@ public class TeacherController {
     public String deleteProfessor(@PathVariable Long id){
         teacherService.delete(id);
         return "redirect:/professors";
+    }
+
+    @GetMapping("/search")
+    public String searchStudent(@RequestParam String query, @RequestParam String gender, Model model){
+        List<TeacherDTO> teacherDTOS = teacherService.findByLastNameOrSpecialtyAndGender(query,gender);
+        model.addAttribute("professors",teacherDTOS);
+        return "students/list";
     }
 
 }

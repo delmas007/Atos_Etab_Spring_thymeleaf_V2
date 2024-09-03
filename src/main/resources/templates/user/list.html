@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<title>User</title>
+<link rel="stylesheet" href="../css/utilisateur/lister.css">
+<head th:insert="~{fragments/fragment :: head}">
+</head>
+<body>
+<div  th:insert="~{fragments/fragment :: sidebar(school=${school})}"></div>
+
+<div class="main-content">
+    <main>
+        <header class="header">
+            <h1>User (<span th:text="${users.size()}"></span>)</h1>
+            <form method="get" th:action="/students/search">
+                <div class="form-row">
+                    <input type="search" placeholder="rechercher par nom,genre,matricule" name="query">
+                    <button type="submit" class="edit-btn">Rechercher</button>
+                </div>
+            </form>
+            <a th:href="@{/users/add}"> <img th:src="@{../icon/plus.png}" style="width: 10px;height: 10px" alt=""> NouveL Utilisateur</a>
+        </header>
+        <section class="table-section">
+            <table>
+                <thead>
+                <tr>
+                    <th>Pseudo</th>
+                    <th>Date de creation</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user:${users}">
+                    <td th:text="${user.pseudo}"></td>
+                    <td th:text="${#dates.format(user.creationDate, 'dd MMMM yyyy')}"></td>
+                    <td>
+                        <a th:href="@{/users/{id}(id=${user.id})}">
+                            <button class="edit-btn">Modifier</button>
+                        </a>
+                        <form th:action="@{/users/delete/{id}(id=${user.id})}" method="post" style="display:inline;">
+                            <button type="submit" class="delete-btn">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+</div>
+<!-- Modal de confirmation -->
+<div id="confirmationModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>ATTENTION !!!</h2>
+        </div>
+        <div class="modal-body">
+            <p>Voulez-vous supprimer ce professeur ?</p>
+        </div>
+        <div class="modal-footer">
+            <button id="confirmYes" class="modal-btn yes-btn">Oui</button>
+            <button id="confirmNo" class="modal-btn no-btn">Non</button>
+        </div>
+    </div>
+</div>
+
+<th:block th:insert="~{fragments/fragment :: script-modal}"></th:block>
+</body>
+</html>
