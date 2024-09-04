@@ -14,6 +14,33 @@
     <main>
         <header class="header">
             <h1>User (<span th:text="${users.size()}"></span>)</h1>
+<!--            <form class="d-flex" role="search" th:action="@{/users/search}">-->
+<!--                <input name="date" th:value="${date}" class="form-control me-2 w-100" type="date" placeholder="RECHERCHE : (DATE DE CREATION)" aria-label="Search">-->
+<!--                <select name="role"  class="form-control">-->
+<!--                    <th:block th:each="role : ${roles}" >-->
+<!--                        <option th:value="${role.nameRole}" th:text="${role.nameRole}" ></option>-->
+<!--                    </th:block>-->
+<!--                </select>-->
+<!--                <button class="btn btn-outline-success" type="submit">Rechercher</button>-->
+<!--            </form>-->
+            <form method="get" th:action="@{/users/search}">
+                <div class="form-row">
+                    <input type="date" placeholder="RECHERCHE : (NOM , GENRE , MATRICULE)" th:value="${date}" name="date">
+<!--                    <select name="role"  class="form-control">-->
+<!--                        <th:block th:each="rolee : ${roles}" >-->
+<!--                            <option th:value="${rolee.role}" th:text="${rolee.role}" ></option>-->
+<!--                        </th:block>-->
+<!--                    </select>-->
+                    <select name="role"  class="form-control">
+                        <option value="" disabled selected>Sélectionner un role</option>
+                        <option th:each="rolee : ${roles}"
+                                th:value="${rolee.getRole()}"
+                                th:text="${rolee.getRole()}">
+                        </option>
+                    </select>
+                    <button type="submit" class="edit-btn">Rechercher</button>
+                </div>
+            </form>
             <a th:href="@{/users/add}"> <img th:src="@{../icon/plus.png}" style="width: 10px;height: 10px" alt=""> NouveL Utilisateur</a>
         </header>
         <section class="table-section">

@@ -44,42 +44,39 @@ public class ExcelController {
             return dto;
         }).toList();
 
-        // Chemin du dossier de sauvegarde
         String folderPath = "C:\\Users\\angam\\Desktop\\Atos\\Atos_Etab_Spring_thymeleaf_V2\\src\\main\\resources\\excel";
         File folder = new File(folderPath);
         if (!folder.exists()) {
-            folder.mkdirs(); // Créer le dossier s'il n'existe pas
+            folder.mkdirs();
         }
 
-        // Nom du fichier Excel
+
         String fileName = "students.xlsx";
         File file = new File(folderPath + File.separator + fileName);
 
-        // Écrire le fichier Excel dans le dossier avec EasyExcel
         try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             EasyExcel.write(fileOutputStream, StudentExcelDTO.class)
                     .sheet("Students")
                     .doWrite(studentExcelDTOS);
         } catch (Exception e) {
-            e.printStackTrace();  // Affiche la pile d'appels complète
+            e.printStackTrace();
             throw new RuntimeException("Failed to write Excel file: " + e.getMessage(), e);
         }
 
-        // Ajuster automatiquement la largeur des colonnes avec Apache POI
         try (FileInputStream fileInputStream = new FileInputStream(file);
              Workbook workbook = new XSSFWorkbook(fileInputStream);
              FileOutputStream fileOutputStream = new FileOutputStream(file)) {
 
             Sheet sheet = workbook.getSheet("Students");
 
-            // Ajuster automatiquement la largeur de chaque colonne
+
             for (int i = 0; i < sheet.getRow(0).getLastCellNum(); i++) {
                 sheet.autoSizeColumn(i);
             }
 
             workbook.write(fileOutputStream);
         } catch (Exception e) {
-            e.printStackTrace();  // Affiche la pile d'appels complète
+            e.printStackTrace();
             throw new RuntimeException("Failed to adjust column widths: " + e.getMessage(), e);
         }
 
@@ -104,42 +101,40 @@ public class ExcelController {
             return dto;
         }).toList();
 
-        // Chemin du dossier de sauvegarde
         String folderPath = "C:\\Users\\angam\\Desktop\\Atos\\Atos_Etab_Spring_thymeleaf_V2\\src\\main\\resources\\excel";
         File folder = new File(folderPath);
         if (!folder.exists()) {
-            folder.mkdirs(); // Créer le dossier s'il n'existe pas
+            folder.mkdirs();
         }
 
-        // Nom du fichier Excel
+
         String fileName = "teachers.xlsx";
         File file = new File(folderPath + File.separator + fileName);
 
-        // Écrire le fichier Excel dans le dossier avec EasyExcel
+
         try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             EasyExcel.write(fileOutputStream, TeacherExcelDTO.class)
                     .sheet("Teachers")
                     .doWrite(teacherExcelDTOS);
         } catch (Exception e) {
-            e.printStackTrace();  // Affiche la pile d'appels complète
+            e.printStackTrace();
             throw new RuntimeException("Failed to write Excel file: " + e.getMessage(), e);
         }
 
-        // Ajuster automatiquement la largeur des colonnes avec Apache POI
         try (FileInputStream fileInputStream = new FileInputStream(file);
              Workbook workbook = new XSSFWorkbook(fileInputStream);
              FileOutputStream fileOutputStream = new FileOutputStream(file)) {
 
             Sheet sheet = workbook.getSheet("Teachers");
 
-            // Ajuster automatiquement la largeur de chaque colonne
+
             for (int i = 0; i < sheet.getRow(0).getLastCellNum(); i++) {
                 sheet.autoSizeColumn(i);
             }
 
             workbook.write(fileOutputStream);
         } catch (Exception e) {
-            e.printStackTrace();  // Affiche la pile d'appels complète
+            e.printStackTrace();
             throw new RuntimeException("Failed to adjust column widths: " + e.getMessage(), e);
         }
 

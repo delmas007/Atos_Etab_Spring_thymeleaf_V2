@@ -1,11 +1,15 @@
 package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Imp;
 
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.model.User;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.repository.UserRepository;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Mapper.UserMapper;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.UserService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,5 +54,11 @@ public class UserServiceImp implements UserService {
             });
         }
         return getAll();
+    }
+
+    @Override
+    public List<UserDTO> findByCreatedDateLessThanAndRoleUserNameRole(Instant createdDate, String role) {
+        List<User> users = userRepository.findByCreationDateLessThanAndRoleUserRole(Date.from(createdDate), role);
+        return users.stream().map(user -> userMapper.fromEntity(user)).toList();
     }
 }

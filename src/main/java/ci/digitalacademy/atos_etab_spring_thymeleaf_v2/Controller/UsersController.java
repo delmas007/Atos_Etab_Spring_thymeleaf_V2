@@ -9,12 +9,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -75,6 +74,18 @@ public class UsersController {
     public String deleteUser(@PathVariable Long id){
         userService.delete(id);
         return "redirect:/users";
+    }
+
+    @GetMapping("/search")
+    public String searchTeachers(@RequestParam LocalDate date  , @RequestParam String role, Model model)
+    {
+        List<UserDTO> users = userService.findByCreatedDateLessThanAndRoleUserNameRole(Instant.from(date.atStartOfDay(ZoneOffset.systemDefault())), role);
+        model.addAttribute("users", users);
+        model.addAttribute("date", date);
+        model.addAttribute("role", role);
+        model.addAttribute("roles", roleUserService.getAll());
+
+        return "user/list";
     }
 
 }

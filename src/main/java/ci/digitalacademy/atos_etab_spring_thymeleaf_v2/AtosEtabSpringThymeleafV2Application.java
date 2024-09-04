@@ -22,7 +22,7 @@ import java.util.Set;
 
 @SpringBootApplication
 @RequiredArgsConstructor
-public class AtosEtabSpringThymeleafV2Application  {
+public class AtosEtabSpringThymeleafV2Application {
     private final AppSettingService appSettingService;
     private final SchoolService schoolService;
     private final RoleUserService roleUserService;
@@ -31,6 +31,7 @@ public class AtosEtabSpringThymeleafV2Application  {
     public static void main(String[] args) {
         SpringApplication.run(AtosEtabSpringThymeleafV2Application.class, args);
     }
+
 
 //    @Override
 //    public void run(String... args) throws Exception {
