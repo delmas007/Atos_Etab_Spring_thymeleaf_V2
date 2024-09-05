@@ -8,6 +8,7 @@ import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.SchoolService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,7 @@ public class SchoolController {
     private final AppSettingService appSettingService;
     private final AppService appService;
     private final FileStorageService fileStorageService;
+    private  final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/schools")
     public String showAddCardPage(HttpServletRequest request, Model model){
@@ -35,7 +37,7 @@ public class SchoolController {
     }
 
 
-    @PostMapping("/PostSchool")
+    @PostMapping("/postschool")
     public String saveStudent(SchoolDTO schoolDTO){
         AppSettingDTO settingDTO = appSettingService.getAll().stream().findFirst().orElse(null);
         schoolDTO.setAppSetting(settingDTO);
@@ -74,17 +76,17 @@ public class SchoolController {
 
         UserDTO userDTO = new UserDTO();
         userDTO.setPseudo("delmas");
-        userDTO.setPassword("delmas");
+        userDTO.setPassword(bCryptPasswordEncoder.encode("delmas"));
         userDTO.setRoleUser(roleUserDTOSet);
 
         UserDTO userDTO2 = new UserDTO();
         userDTO2.setPseudo("delmas2");
-        userDTO2.setPassword("delmas2");
+        userDTO2.setPassword(bCryptPasswordEncoder.encode("delmas2"));
         userDTO2.setRoleUser(roleUserDTOSet2);
 
         UserDTO userDTO3 = new UserDTO();
         userDTO3.setPseudo("delmas3");
-        userDTO3.setPassword("delmas3");
+        userDTO3.setPassword(bCryptPasswordEncoder.encode("delmas3"));
         userDTO3.setRoleUser(roleUserDTOSet3);
         List<UserDTO> listUser = List.of(userDTO, userDTO2, userDTO3);
         appService.initUser(roleUserDTOS,school,listUser);

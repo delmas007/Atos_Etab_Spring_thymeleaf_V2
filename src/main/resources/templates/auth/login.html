@@ -21,14 +21,14 @@
             <h2 th:text="${school.name}"></h2>
         </div>
 
-        <form>
-            <input type="text" placeholder="Identifiant" required>
-            <input type="password" placeholder="Mot de passe" required>
-<!--            <button type="submit">Connexion</button>-->
-            <a class="button" th:href="@{/dashbord}">Connexion</a>
+        <form th:action="@{/login}" method="post">
+            <input type="text" name="username" placeholder="Nom d'utilisateur" required>
+            <input type="password" name="password" placeholder="Mot de passe" required>
+            <button type="submit" >Connexion</button>
+<!--            <a class="button" th:href="@{/dashbord}">Connexion</a>-->
         </form>
     </div>
 </div>
-<script src="js/Home.js"></script>
+<!--<script src="js/Home.js"></script>-->
 </body>
 </html>

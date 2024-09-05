@@ -32,7 +32,7 @@ public class IndexController {
         } else if (schoolDTOS.isEmpty()) {
             return "redirect:/schools";
         }else {
-            return "redirect:/connexion";
+            return "redirect:/login";
         }
     }
 

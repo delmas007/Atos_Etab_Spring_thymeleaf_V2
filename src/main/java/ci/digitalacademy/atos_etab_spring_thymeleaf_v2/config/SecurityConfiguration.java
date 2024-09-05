@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
@@ -21,22 +22,20 @@ public class SecurityConfiguration {
                         .requestMatchers("/css/**").permitAll()
                         .requestMatchers("/icon/**").permitAll()
                         .requestMatchers("/js/**").permitAll()
-//                        .requestMatchers("/connexion/**").permitAll()
                         .requestMatchers("/excels/**").permitAll()
-                        .requestMatchers("/dashbord/**").permitAll()
-                        .requestMatchers("/reports/**").permitAll()
-                        .requestMatchers("/schools/**").permitAll()
-                        .requestMatchers("/PostSchool/**").permitAll()
+//                        .requestMatchers("/reports/**").permitAll()
+                        .requestMatchers("/schools").permitAll()
+                        .requestMatchers("/postschool/**").permitAll()
                         .requestMatchers("/settings/**").permitAll()
-                        .requestMatchers("/PostSettings/**").permitAll()
-                        .requestMatchers("/cards/**").permitAll()
-                        .requestMatchers("/students/**").permitAll()
-                        .requestMatchers("/professors/**").permitAll()
+                        .requestMatchers("/postsettings/**").permitAll()
+//                        .requestMatchers("/cards/**").permitAll()
+//                        .requestMatchers("/students/**").permitAll()
+//                        .requestMatchers("/professors/**").permitAll()
                         .requestMatchers("/users/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((login) -> login
-                        .loginPage("/connexion").permitAll()
+                        .loginPage("/login").permitAll()
                         .defaultSuccessUrl("/dashbord", true)
                         .failureUrl("/login?error=true")
                 )
@@ -49,6 +48,11 @@ public class SecurityConfiguration {
                 );
 
         return http.build();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 }

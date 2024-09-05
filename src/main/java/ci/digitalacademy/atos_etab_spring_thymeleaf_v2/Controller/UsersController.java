@@ -1,9 +1,14 @@
 package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Controller;
 
 
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.model.RoleUser;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.model.User;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.repository.RoleUserRepository;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.repository.UserRepository;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Mapper.RoleUserMapper;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.RoleUserService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.UserService;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.RoleUserDTO;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.UserDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Controller
@@ -25,6 +30,9 @@ public class UsersController {
 
     private final UserService userService;
     private final RoleUserService roleUserService;
+    private final UserRepository userRepository;
+    private final RoleUserRepository roleUserRepository;
+    private final RoleUserMapper roleUserMapper;
 
     @GetMapping("/add")
     public String showAddUserPage(HttpServletRequest request, Model model){
@@ -53,6 +61,10 @@ public class UsersController {
     @PostMapping
     public String saveUser(UserDTO user){
         user.setCreationDate(Date.from(Instant.now()));
+        List<RoleUserDTO> all =roleUserService.getAll();
+        RoleUserDTO roleUserDTO1 = all.get(1);
+        Set<RoleUserDTO> roleUserDTOStream = Set.of(roleUserDTO1);
+        user.setRoleUser(roleUserDTOStream);
         userService.save(user);
         return "redirect:/users";
     }

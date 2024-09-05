@@ -49,7 +49,7 @@ form input[type="text"], form input[type="password"] {
 }
 
 form button {
-    width: 320px;
+    width: auto;
     padding: 10px;
     background-color: #555555;
     color: #fff;
@@ -78,7 +78,7 @@ form button:hover {
 }
 
 .button {
-    width: 1000px;
+    width: auto;
     padding: 10px;
     background-color: #555555;
     color: #fff;
