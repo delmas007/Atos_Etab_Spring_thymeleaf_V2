@@ -26,6 +26,7 @@ public class IndexController {
     public  String verifyConfiguration() {
         List<AppSettingDTO> appSettingDTOS = appSettingService.getAll();
         List<SchoolDTO> schoolDTOS = schoolService.getAll();
+
         if (appSettingDTOS.isEmpty()) {
             return "redirect:/settings";
         } else if (schoolDTOS.isEmpty()) {
