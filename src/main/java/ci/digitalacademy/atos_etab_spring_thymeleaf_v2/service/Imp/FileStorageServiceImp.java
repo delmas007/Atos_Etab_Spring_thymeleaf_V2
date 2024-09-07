@@ -19,16 +19,14 @@ public class FileStorageServiceImp implements FileStorageService {
 
     @Override
     public String upload(MultipartFile file) throws IOException {
-
-// Upload the image
         Map params1 = ObjectUtils.asMap(
                 "use_filename", true,
-                "unique_filename", false,
+                "unique_filename", true,
                 "overwrite", true
         );
 
-        Map upload = cloudinary.uploader().upload(file, params1);
+        Map upload = cloudinary.uploader().upload(file.getBytes(), params1);
         System.out.println(upload);
-        return "";
+        return upload.get("url").toString();
     }
 }

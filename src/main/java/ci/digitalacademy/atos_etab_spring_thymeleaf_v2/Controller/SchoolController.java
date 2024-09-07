@@ -29,7 +29,7 @@ public class SchoolController {
     private  final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/schools")
-    public String showAddCardPage(HttpServletRequest request, Model model){
+    public String showAddSchoolPage(HttpServletRequest request, Model model){
         String currentUrl = request.getRequestURI();
         model.addAttribute("currentUrl", currentUrl);
         model.addAttribute("school", new RegistrationSchoolDto());
@@ -37,25 +37,26 @@ public class SchoolController {
     }
 
 
-    @PostMapping("/postschool")
-    public String saveStudent(SchoolDTO schoolDTO){
-        AppSettingDTO settingDTO = appSettingService.getAll().stream().findFirst().orElse(null);
-        schoolDTO.setAppSetting(settingDTO);
-        SchoolDTO save = schoolService.save(schoolDTO);
-        createUserAndRole(save);
-        return "redirect:/";
-    }
-
-
-//    @PostMapping("/PostSchool")
-//    public String saveSchool(@ModelAttribute RegistrationSchoolDto registrationSchoolDto) throws IOException {
-//        fileStorageService.upload(registrationSchoolDto.getFile());
+//    @PostMapping("/postschool")
+//    public String saveStudent(SchoolDTO schoolDTO){
 //        AppSettingDTO settingDTO = appSettingService.getAll().stream().findFirst().orElse(null);
-//        registrationSchoolDto.setAppSetting(settingDTO);
-//        SchoolDTO save = schoolService.save(registrationSchoolDto);
+//        schoolDTO.setAppSetting(settingDTO);
+//        SchoolDTO save = schoolService.save(schoolDTO);
 //        createUserAndRole(save);
 //        return "redirect:/";
 //    }
+
+
+    @PostMapping("/postschool")
+    public String saveSchool(@ModelAttribute RegistrationSchoolDto registrationSchoolDto) throws IOException {
+        String upload = fileStorageService.upload(registrationSchoolDto.getFile());
+        AppSettingDTO settingDTO = appSettingService.getAll().stream().findFirst().orElse(null);
+        registrationSchoolDto.setAppSetting(settingDTO);
+        registrationSchoolDto.setLogo(upload);
+        SchoolDTO save = schoolService.save(registrationSchoolDto);
+        createUserAndRole(save);
+        return "redirect:/";
+    }
 
     public void createUserAndRole(SchoolDTO school){
         RoleUserDTO roleUserDTO = new RoleUserDTO();

@@ -31,6 +31,7 @@ public class SecurityConfiguration {
 //                        .requestMatchers("/cards/**").permitAll()
 //                        .requestMatchers("/students/**").permitAll()
 //                        .requestMatchers("/professors/**").permitAll()
+                        .requestMatchers("/").permitAll()
                         .requestMatchers("/users/**").permitAll()
                         .anyRequest().authenticated()
                 )
