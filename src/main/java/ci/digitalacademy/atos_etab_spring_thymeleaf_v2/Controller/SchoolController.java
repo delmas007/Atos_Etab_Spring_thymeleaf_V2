@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -55,13 +56,29 @@ public class SchoolController {
 
     @PostMapping
     public String saveSchool(@ModelAttribute RegistrationSchoolDto registrationSchoolDto) throws IOException {
+        if (registrationSchoolDto.getId() != null){
+            if (registrationSchoolDto.getFile().isEmpty()){
+                SchoolDTO schoolDTO = schoolService.getAll().stream().findFirst().orElse(null);
+                registrationSchoolDto.setLogo(schoolDTO.getLogo());
+                schoolService.save(registrationSchoolDto);
+                return "redirect:schools/update";
+            }
+            RegistrationSchoolDto file = file(registrationSchoolDto);
+            schoolService.save(file);
+            return "redirect:schools/update";
+        }
+        RegistrationSchoolDto file = file(registrationSchoolDto);
+        SchoolDTO save = schoolService.save(file);
+        createUserAndRole(save);
+        return "redirect:/";
+    }
+
+    public RegistrationSchoolDto file(RegistrationSchoolDto registrationSchoolDto) throws IOException {
         String upload = fileStorageService.upload(registrationSchoolDto.getFile());
         AppSettingDTO settingDTO = appSettingService.getAll().stream().findFirst().orElse(null);
         registrationSchoolDto.setAppSetting(settingDTO);
         registrationSchoolDto.setLogo(upload);
-        SchoolDTO save = schoolService.save(registrationSchoolDto);
-        createUserAndRole(save);
-        return "redirect:/";
+        return registrationSchoolDto;
     }
 
     public void createUserAndRole(SchoolDTO school){
