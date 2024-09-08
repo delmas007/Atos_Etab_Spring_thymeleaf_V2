@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Controller
-@RequestMapping
+@RequestMapping("/schools")
 @RequiredArgsConstructor
 public class SchoolController {
     private final SchoolService schoolService;
@@ -28,26 +29,31 @@ public class SchoolController {
     private final FileStorageService fileStorageService;
     private  final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @GetMapping("/schools")
+    @GetMapping
     public String showAddSchoolPage(HttpServletRequest request, Model model){
         String currentUrl = request.getRequestURI();
         model.addAttribute("currentUrl", currentUrl);
-        model.addAttribute("school", new RegistrationSchoolDto());
+        model.addAttribute("schools", new RegistrationSchoolDto());
         return "school/forms";
     }
 
+    @GetMapping("/update")
+    public String showUpdateProfessorForm(HttpServletRequest request, Model model){
+        String currentUrl = request.getRequestURI();
+        SchoolDTO schoolDTO = schoolService.getAll().stream().findFirst().orElse(null);
+        RegistrationSchoolDto registrationSchoolDto = new RegistrationSchoolDto();
+        registrationSchoolDto.setAppSetting(schoolDTO.getAppSetting());
+        registrationSchoolDto.setLogo(schoolDTO.getLogo());
+        registrationSchoolDto.setName(schoolDTO.getName());
+        registrationSchoolDto.setId(schoolDTO.getId());
+        model.addAttribute("currentUrl", currentUrl);
+            model.addAttribute("schools", registrationSchoolDto);
+            return "school/forms";
 
-//    @PostMapping("/postschool")
-//    public String saveStudent(SchoolDTO schoolDTO){
-//        AppSettingDTO settingDTO = appSettingService.getAll().stream().findFirst().orElse(null);
-//        schoolDTO.setAppSetting(settingDTO);
-//        SchoolDTO save = schoolService.save(schoolDTO);
-//        createUserAndRole(save);
-//        return "redirect:/";
-//    }
+    }
 
 
-    @PostMapping("/postschool")
+    @PostMapping
     public String saveSchool(@ModelAttribute RegistrationSchoolDto registrationSchoolDto) throws IOException {
         String upload = fileStorageService.upload(registrationSchoolDto.getFile());
         AppSettingDTO settingDTO = appSettingService.getAll().stream().findFirst().orElse(null);
@@ -64,7 +70,6 @@ public class SchoolController {
         RoleUserDTO roleUserDTO3= new RoleUserDTO();
         roleUserDTO.setRole("ADMIN");
         roleUserDTO2.setRole("USER");
-        roleUserDTO3.setRole("OTHER");
         List<RoleUserDTO> roleUserDTOS = List.of(roleUserDTO, roleUserDTO2, roleUserDTO3);
         roleUserDTOS =appService.initRoleUser(roleUserDTOS);
 
@@ -72,8 +77,6 @@ public class SchoolController {
         roleUserDTOSet.add(roleUserDTOS.get(0));
         Set<RoleUserDTO> roleUserDTOSet2 = new HashSet<>();
         roleUserDTOSet2.add(roleUserDTOS.get(1));
-        Set<RoleUserDTO> roleUserDTOSet3 = new HashSet<>();
-        roleUserDTOSet3.add(roleUserDTOS.get(2));
 
         UserDTO userDTO = new UserDTO();
         userDTO.setPseudo("delmas");
@@ -84,12 +87,7 @@ public class SchoolController {
         userDTO2.setPseudo("delmas2");
         userDTO2.setPassword(bCryptPasswordEncoder.encode("delmas2"));
         userDTO2.setRoleUser(roleUserDTOSet2);
-
-        UserDTO userDTO3 = new UserDTO();
-        userDTO3.setPseudo("delmas3");
-        userDTO3.setPassword(bCryptPasswordEncoder.encode("delmas3"));
-        userDTO3.setRoleUser(roleUserDTOSet3);
-        List<UserDTO> listUser = List.of(userDTO, userDTO2, userDTO3);
+        List<UserDTO> listUser = List.of(userDTO, userDTO2);
         appService.initUser(roleUserDTOS,school,listUser);
     }
 }

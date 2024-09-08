@@ -1,24 +1,41 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="fr"-->
+<!--      xmlns="http://www.w3.org/1999/xhtml"-->
+<!--      xmlns:th="http://www.thymeleaf.org">-->
+
+<!--<title>School</title>-->
+<!--<head th:fragment="head">-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <link rel="stylesheet" href="../css/professeur/ajouter.css">-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
+<!--    <link rel="preconnect" href="https://fonts.googleapis.com">-->
+<!--    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>-->
+<!--    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">-->
+<!--</head>-->
 <!DOCTYPE html>
 <html lang="fr"
       xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
 
 <title>School</title>
-<head th:fragment="head">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/professeur/ajouter.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/professeur/ajouter.css">
+<head th:insert="~{fragments/fragment :: head}">
 </head>
+<body>
+<div sec:authorize="isAuthenticated()">
+    <div  th:insert="~{fragments/fragment :: sidebar(school=${school})}"></div>
+</div>
+
 
 <div class="main-content">
     <main>
         <h2>Ajouter parametre Ecole</h2>
-        <form id="addStudentForm" th:object="${school}" th:action="@{/postschool}" method="post" enctype="multipart/form-data">
+        <form id="addStudentForm" th:object="${schools}" th:action="@{/schools}" method="post" enctype="multipart/form-data">
 <!--        <form id="addStudentForm" th:object="${school}" th:action="@{/postschool}" method="post" >-->
+            <input type="text" th:field="*{id}"  hidden="">
             <div class="form-row">
                 <input type="text" th:field="*{name}"  placeholder="Nom" required>
                 <input type="file" th:field="*{file}"  placeholder="Photo" required>

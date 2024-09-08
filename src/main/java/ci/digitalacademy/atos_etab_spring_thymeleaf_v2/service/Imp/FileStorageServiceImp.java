@@ -21,7 +21,7 @@ public class FileStorageServiceImp implements FileStorageService {
     public String upload(MultipartFile file) throws IOException {
         Map params1 = ObjectUtils.asMap(
                 "use_filename", true,
-                "unique_filename", true,
+                "unique_filename", false,
                 "overwrite", true
         );
 

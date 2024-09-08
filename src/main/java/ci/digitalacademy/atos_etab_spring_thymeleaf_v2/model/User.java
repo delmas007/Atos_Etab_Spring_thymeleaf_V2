@@ -13,6 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @Entity
+@Table(name = "utilisateur")
 public class User{
 
     @Id
@@ -24,7 +25,7 @@ public class User{
     @Temporal(TemporalType.DATE)
     private Date creationDate;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<RoleUser> roleUser;
 
     @ManyToOne

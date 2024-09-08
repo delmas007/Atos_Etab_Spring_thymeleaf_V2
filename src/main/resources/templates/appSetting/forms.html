@@ -1,30 +1,51 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="fr"-->
+<!--      xmlns="http://www.w3.org/1999/xhtml"-->
+<!--      xmlns:th="http://www.thymeleaf.org">-->
+
+<!--<title>Setting</title>-->
+<!--<head th:fragment="head">-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <link rel="stylesheet" href="../css/professeur/ajouter.css">-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
+<!--    <link rel="preconnect" href="https://fonts.googleapis.com">-->
+<!--    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>-->
+<!--    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">-->
+<!--</head>-->
+
 <!DOCTYPE html>
 <html lang="fr"
       xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
 
-<title>Setting</title>
-<head th:fragment="head">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/professeur/ajouter.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<title>Smtp</title>
+<link rel="stylesheet" href="../css/professeur/ajouter.css">
+<head th:insert="~{fragments/fragment :: head}">
 </head>
-
+<body>
+<div sec:authorize="isAuthenticated()">
+    <div  th:insert="~{fragments/fragment :: sidebar(school=${school})}"></div>
+</div>
 <div class="main-content">
     <main>
         <h2>Ajouter parametre SMTP</h2>
-        <form id="addStudentForm" th:object="${setting}" th:action="@{/postsettings}" method="post">
+        <form id="addStudentForm" th:object="${setting}" th:action="@{/settings}" method="post">
+            <input type="text" th:field="*{id}"  hidden="">
             <div class="form-row">
                 <input type="text" th:field="*{smtpUsername}"  placeholder="Nom d'utilisateur" required>
-                <input type="text" th:field="*{smtpPassword}"  placeholder="Mot de passe" required>
+                <div sec:authorize="isAuthenticated()">
+                    <input type="password" th:field="*{smtpPassword}"  placeholder="Mot de passe">
+                </div>
+                <div sec:authorize="isAnonymous()">
+                    <input type="password" th:field="*{smtpPassword}"  placeholder="Mot de passe" required>
+                </div>
             </div>
             <div class="form-row">
                 <input type="text" th:field="*{smtpPort}"  placeholder="Port" required>
-                <input type="password" th:field="*{smtpServer}"  placeholder="Serveur" required>
+                <input type="text" th:field="*{smtpServer}"  placeholder="Serveur" required>
             </div>
             <div class="form-row buttons">
                 <button type="button" class="btn-cancel">Annuler</button>
