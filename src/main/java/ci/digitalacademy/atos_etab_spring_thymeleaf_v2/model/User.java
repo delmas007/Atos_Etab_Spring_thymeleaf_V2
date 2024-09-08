@@ -22,6 +22,8 @@ public class User{
     private String pseudo;
     private String password;
 
+    private boolean isActive;
+
     @Temporal(TemporalType.DATE)
     private Date creationDate;
 
