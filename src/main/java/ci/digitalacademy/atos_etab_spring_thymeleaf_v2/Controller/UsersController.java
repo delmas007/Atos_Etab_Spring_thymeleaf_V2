@@ -62,8 +62,9 @@ public class UsersController {
     public String toggleUserStatus(@PathVariable Long id) {
         Optional<UserDTO> userDTO = userService.findOne(id);
         UserDTO userDTO1 = userDTO.get();
-        userDTO1.setActive(!userDTO1.isActive());
-        userService.save(userDTO1);
+        userDTO1.setActive(!userDTO1.getActive());
+        UserDTO save = userService.save(userDTO1);
+        System.out.println(save);
         return "redirect:/users";
     }
 

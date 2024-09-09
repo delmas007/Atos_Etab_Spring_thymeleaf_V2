@@ -6,6 +6,7 @@ import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.*;
 import com.alibaba.excel.EasyExcel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -27,7 +28,7 @@ public class ExcelController {
     private final TeacherService teacherService;
     private final UserService userService;
 
-    @PostMapping("/students")
+    @GetMapping("/students")
     public String exportStudentToExcel() throws IOException {
         List<StudentDTO> studentDtos = studentService.getAll();
 
@@ -83,7 +84,7 @@ public class ExcelController {
         return "redirect:/reports";
     }
 
-    @PostMapping("/teachers")
+    @GetMapping("/teachers")
     public String exportTeacherToExcel() throws IOException {
         List<TeacherDTO> teacherDTOS = teacherService.getAll();
 
@@ -141,7 +142,7 @@ public class ExcelController {
         return "redirect:/reports";
     }
 
-    @PostMapping("/users")
+    @GetMapping("/users")
     public String exportUserToExcel() throws IOException {
         List<UserDTO> userDTOS = userService.getAll();
 

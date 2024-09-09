@@ -42,7 +42,7 @@ public class DomainUserService implements UserDetailsService {
                 .username(userRecover.getPseudo())
                 .password(userRecover.getPassword())
                 .authorities(grantedAuthorities)
-                .disabled(!userRecover.isActive())
+                .disabled(!userRecover.getActive())
                 .roles()
                 .build()).orElseThrow(() -> new IllegalArgumentException("User not found"));
     }

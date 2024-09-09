@@ -16,7 +16,7 @@ public class UserDTO {
     private String pseudo;
     private String password;
     private Date creationDate;
-    private boolean isActive;
+    private Boolean active;
     private Set<RoleUserDTO> roleUser;
     private SchoolDTO school;
 }

@@ -4,14 +4,28 @@
       xmlns:th="http://www.thymeleaf.org">
 
 <title>repport</title>
+<!--<script>-->
+<!--    function updateFormAction() {-->
+<!--        var form = document.getElementById('addStudentForm');-->
+<!--        var select = document.getElementById('rapport');-->
+<!--        var selectedValue = select.value;-->
+
+<!--        if (selectedValue) {-->
+<!--            form.action = '/excels/' + selectedValue;-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
 <script>
-    function updateFormAction() {
+    function updateFormAction(buttonType) {
         var form = document.getElementById('addStudentForm');
         var select = document.getElementById('rapport');
         var selectedValue = select.value;
-
         if (selectedValue) {
-            form.action = '/excels/' + selectedValue;
+            if (buttonType === 'pdf') {
+                form.action = '/pdf/' + selectedValue;
+            } else if (buttonType === 'excel') {
+                form.action = '/excels/' + selectedValue;
+            }
         }
     }
 </script>
@@ -37,18 +51,19 @@
 <!--                <button type="submit" class="btn-save">Generer format Excel</button>-->
 <!--            </div>-->
 <!--        </form>-->
-        <form id="addStudentForm" method="post">
+
+        <form id="addStudentForm" method="get">
             <div class="form-row">
-            </div>
-            <div class="form-row">
-                <select id="rapport" required onchange="updateFormAction()">
+                <select id="rapport" required>
                     <option value="">Sélectionner une option</option>
                     <option value="students">Liste des élèves</option>
                     <option value="teachers">Liste des professeurs</option>
                     <option value="users">Liste des utilisateurs</option>
                 </select>
-                <button type="button" class="btn-cancel" onclick="updateFormAction()">Générer format PDF</button>
-                <button type="submit" class="btn-save">Générer format Excel</button>
+            </div>
+            <div class="form-row">
+                <button type="submit" class="btn-cancel" onclick="updateFormAction('pdf')">Générer format PDF</button>
+                <button type="submit" class="btn-save" onclick="updateFormAction('excel')">Générer format Excels</button>
             </div>
         </form>
     </main>

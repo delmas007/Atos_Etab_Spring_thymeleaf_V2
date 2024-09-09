@@ -65,8 +65,8 @@
                         </form>
 
                         <form th:action="@{/users/status/{id}(id=${user.id})}" method="post" style="display:inline;">
-                            <button type="submit" th:text="${user.isActive() ? 'Désactiver' : 'Activer'}"
-                                    th:class="${user.isActive() ? 'deactivate-btn' : 'activate-btn'}">
+                            <button type="submit" th:text="${user.getActive() ? 'Désactiver' : 'Activer'}"
+                                    th:class="${user.getActive() ? 'deactivate-btn' : 'activate-btn'}">
                             </button>
                         </form>
                     </td>

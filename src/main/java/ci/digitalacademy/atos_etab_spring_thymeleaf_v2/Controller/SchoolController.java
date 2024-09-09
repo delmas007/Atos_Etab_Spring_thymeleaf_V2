@@ -98,11 +98,13 @@ public class SchoolController {
         UserDTO userDTO = new UserDTO();
         userDTO.setPseudo("delmas");
         userDTO.setPassword(bCryptPasswordEncoder.encode("delmas"));
+        userDTO.setActive(true);
         userDTO.setRoleUser(roleUserDTOSet);
 
         UserDTO userDTO2 = new UserDTO();
         userDTO2.setPseudo("delmas2");
         userDTO2.setPassword(bCryptPasswordEncoder.encode("delmas2"));
+        userDTO2.setActive(true);
         userDTO2.setRoleUser(roleUserDTOSet2);
         List<UserDTO> listUser = List.of(userDTO, userDTO2);
         appService.initUser(roleUserDTOS,school,listUser);

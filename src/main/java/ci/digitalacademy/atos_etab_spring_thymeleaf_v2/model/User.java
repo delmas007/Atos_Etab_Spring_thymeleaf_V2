@@ -22,7 +22,8 @@ public class User{
     private String pseudo;
     private String password;
 
-    private boolean isActive;
+    @Column(name = "is_active", columnDefinition = "boolean default true")
+    private Boolean active = true;
 
     @Temporal(TemporalType.DATE)
     private Date creationDate;
