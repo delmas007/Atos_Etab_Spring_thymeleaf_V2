@@ -34,6 +34,18 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Override
+    public StudentDTO update(StudentDTO studentDTO, Long id) {
+        return findOne(id).map(studentDTO1 -> {
+            studentDTO1.setFirstName(studentDTO.getFirstName());
+            studentDTO1.setLastName(studentDTO.getLastName());
+            studentDTO1.setGender(studentDTO1.getGender());
+            studentDTO1.setMatricule(studentDTO.getMatricule());
+            studentDTO1.setPhoneNumberFather(studentDTO.getPhoneNumberFather());
+            return save(studentDTO1);
+    }).orElseThrow(() -> new IllegalArgumentException("Student not found"));
+    }
+
+    @Override
     public void delete(Long id) {
         studentRepository.deleteById(id);
     }

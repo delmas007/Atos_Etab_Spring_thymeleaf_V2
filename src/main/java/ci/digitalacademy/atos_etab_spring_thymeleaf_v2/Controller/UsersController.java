@@ -8,6 +8,7 @@ import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.repository.UserRepository
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Mapper.RoleUserMapper;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.RoleUserService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.UserService;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.RegistrationUserDTO;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.RoleUserDTO;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.UserDTO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,15 +31,14 @@ public class UsersController {
 
     private final UserService userService;
     private final RoleUserService roleUserService;
-    private final UserRepository userRepository;
-    private final RoleUserRepository roleUserRepository;
-    private final RoleUserMapper roleUserMapper;
 
     @GetMapping("/add")
     public String showAddUserPage(HttpServletRequest request, Model model){
+        List<RoleUserDTO> all = roleUserService.getAll();
         String currentUrl = request.getRequestURI();
         model.addAttribute("currentUrl", currentUrl);
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new RegistrationUserDTO());
+        model.addAttribute("roles", all);
         return "user/forms";
     }
 
@@ -52,9 +52,11 @@ public class UsersController {
     @GetMapping
     public String showUserPage(HttpServletRequest request, Model model){
         List<UserDTO> users = userService.getAll();
+        List<RoleUserDTO> all = roleUserService.getAll();
         String currentUrl = request.getRequestURI();
         model.addAttribute("currentUrl", currentUrl);
         model.addAttribute("users", users);
+        model.addAttribute("all", all);
         return "user/list";
     }
 
@@ -69,12 +71,15 @@ public class UsersController {
 
 
     @PostMapping
-    public String saveUser(UserDTO user){
+    public String saveUser(RegistrationUserDTO user){
         user.setCreationDate(Date.from(Instant.now()));
-        List<RoleUserDTO> all =roleUserService.getAll();
-        RoleUserDTO roleUserDTO1 = all.get(1);
-        Set<RoleUserDTO> roleUserDTOStream = Set.of(roleUserDTO1);
-        user.setRoleUser(roleUserDTOStream);
+//        List<RoleUserDTO> all =roleUserService.getAll();
+//        RoleUserDTO roleUserDTO1 = all.get(1);
+//        Set<RoleUserDTO> roleUserDTOStream = Set.of(roleUserDTO1);
+//        user.setRoleUser(roleUserDTOStream);
+        Set<RoleUserDTO> roles = new HashSet<>();
+        roles.add(roleUserService.findOne(user.getId()).orElse(null));
+        user.setRoleUser(roles);
         userService.save(user);
         return "redirect:/users";
     }
@@ -105,7 +110,7 @@ public class UsersController {
         model.addAttribute("users", users);
         model.addAttribute("date", date);
         model.addAttribute("role", role);
-        model.addAttribute("roles", roleUserService.getAll());
+        model.addAttribute("all", roleUserService.getAll());
 
         return "user/list";
     }

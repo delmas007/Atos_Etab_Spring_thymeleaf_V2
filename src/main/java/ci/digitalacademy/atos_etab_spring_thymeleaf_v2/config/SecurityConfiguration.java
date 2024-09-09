@@ -26,6 +26,8 @@ public class SecurityConfiguration {
 //                        .requestMatchers("/reports/**").permitAll()
                         .requestMatchers("/schools/**").permitAll()
                         .requestMatchers("/settings/**").permitAll()
+                        .requestMatchers("api/students/**").permitAll()
+                                .requestMatchers("api/teachers/**").permitAll()
                         .requestMatchers("/login").anonymous()
 //                        .requestMatchers("/cards/**").permitAll()
 //                        .requestMatchers("/students/**").permitAll()

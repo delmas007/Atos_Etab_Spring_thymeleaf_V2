@@ -33,9 +33,9 @@
 <!--                    </select>-->
                     <select name="role"  class="form-control">
                         <option value="" disabled selected>Sélectionner un role</option>
-                        <option th:each="rolee : ${roles}"
-                                th:value="${rolee.getRole()}"
-                                th:text="${rolee.getRole()}">
+                        <option th:each="rolee : ${all}"
+                                th:value="${rolee.role}"
+                                th:text="${rolee.role}">
                         </option>
                     </select>
                     <button type="submit" class="edit-btn">Rechercher</button>

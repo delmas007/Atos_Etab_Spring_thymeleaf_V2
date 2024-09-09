@@ -33,6 +33,12 @@ public class TeacherServiceImp implements TeacherService {
     }
 
     @Override
+    public TeacherDTO update(TeacherDTO teacherDTO, Long id) {
+        teacherDTO.setId(id);
+        return update(teacherDTO);
+    }
+
+    @Override
     public void delete(Long id) {
         teacherRepository.deleteById(id);
     }

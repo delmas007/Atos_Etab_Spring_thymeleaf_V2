@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface StudentService {
     StudentDTO save(StudentDTO studentDTO);
     StudentDTO update(StudentDTO studentDTO);
+    StudentDTO update(StudentDTO studentDTO, Long id);
     void delete(Long id);
     List<StudentDTO> getAll();
     Optional<StudentDTO> findOne(Long id);

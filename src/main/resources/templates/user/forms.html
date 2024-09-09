@@ -26,6 +26,14 @@
             <div class="form-row">
                 <input type="password" id="confirmer mot de passe" placeholder="Confirmer mot de passe" required>
             </div>
+            <div class="form-row">
+                <select id="classe" required th:field="*{role}">
+                    <option th:each="rolee : ${roles}"
+                            th:value="${rolee.id}"
+                            th:text="${rolee.role}">
+                    </option>
+                </select>
+            </div>
             <div class="form-row buttons">
                 <button type="button" class="btn-cancel">Annuler</button>
                 <button type="submit" class="btn-save">Enregistrer</button>

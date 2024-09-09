@@ -13,6 +13,8 @@ import java.util.Set;
 @Builder
 @Entity
 public class Student extends Person  {
+
+    @Column(name = "matricule", unique = true)
     private String matricule;
     private String phoneNumberFather;
 

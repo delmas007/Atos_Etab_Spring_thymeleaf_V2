@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface TeacherService {
     TeacherDTO save(TeacherDTO TeacherDTO);
     TeacherDTO update(TeacherDTO TeacherDTO);
+    TeacherDTO update(TeacherDTO TeacherDTO, Long id);
     void delete(Long id);
     List<TeacherDTO> getAll();
     Optional<TeacherDTO> findOne(Long id);
