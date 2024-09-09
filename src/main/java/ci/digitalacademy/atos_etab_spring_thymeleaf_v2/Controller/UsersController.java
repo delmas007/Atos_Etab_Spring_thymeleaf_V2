@@ -63,8 +63,7 @@ public class UsersController {
         Optional<UserDTO> userDTO = userService.findOne(id);
         UserDTO userDTO1 = userDTO.get();
         userDTO1.setActive(!userDTO1.getActive());
-        UserDTO save = userService.save(userDTO1);
-        System.out.println(save);
+        userService.save(userDTO1);
         return "redirect:/users";
     }
 

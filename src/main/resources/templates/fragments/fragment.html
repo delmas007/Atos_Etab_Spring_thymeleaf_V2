@@ -28,9 +28,9 @@
         <li th:classappend="${currentUrl == '/users' || currentUrl == '/users/add' || currentUrl == '/users/update'} ? 'active'">
             <a  th:href="@{/users}"><img th:src="@{../icon/user.png}" style="width: 30px;height: 30px" alt=""> Utilisateurs</a></li>
         <li th:classappend="${currentUrl == '/settings/update' } ? 'active'">
-            <a  th:href="@{/settings/update}"><img th:src="@{../icon/user.png}" style="width: 30px;height: 30px" alt=""> Parametre smtp</a></li>
+            <a  th:href="@{/settings/update}"><img th:src="@{../icon/setting.png}" style="width: 30px;height: 30px" alt=""> Parametre smtp</a></li>
         <li th:classappend="${currentUrl == '/schools/update'} ? 'active'">
-            <a  th:href="@{/schools/update}"><img th:src="@{../icon/user.png}" style="width: 30px;height: 30px" alt=""> Parametre ecole</a></li>
+            <a  th:href="@{/schools/update}"><img th:src="@{../icon/setting.png}" style="width: 30px;height: 30px" alt=""> Parametre ecole</a></li>
         <li th:classappend="${currentUrl == '/reports'} ? 'active'">
             <a  th:href="@{/reports}"><img th:src="@{../icon/rapport.png}" style="width: 30px;height: 30px" alt=""> Rapport</a></li>
     </ul>
