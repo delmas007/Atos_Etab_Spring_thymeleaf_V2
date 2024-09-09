@@ -13,6 +13,8 @@ import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.RoleUserDTO;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.UserDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -51,12 +53,14 @@ public class UsersController {
 
     @GetMapping
     public String showUserPage(HttpServletRequest request, Model model){
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
         List<UserDTO> users = userService.getAll();
         List<RoleUserDTO> all = roleUserService.getAll();
         String currentUrl = request.getRequestURI();
         model.addAttribute("currentUrl", currentUrl);
         model.addAttribute("users", users);
         model.addAttribute("all", all);
+        model.addAttribute("namee", name);
         return "user/list";
     }
 
@@ -78,8 +82,9 @@ public class UsersController {
 //        Set<RoleUserDTO> roleUserDTOStream = Set.of(roleUserDTO1);
 //        user.setRoleUser(roleUserDTOStream);
         Set<RoleUserDTO> roles = new HashSet<>();
-        roles.add(roleUserService.findOne(user.getId()).orElse(null));
+        roles.add(roleUserService.findOne(user.getRole()).orElse(null));
         user.setRoleUser(roles);
+        user.setActive(true);
         userService.save(user);
         return "redirect:/users";
     }
