@@ -27,6 +27,9 @@ public class DomainUserService implements UserDetailsService {
         if (user.isEmpty()) {
             throw new IllegalArgumentException("User not found");
         }
+//        if (!user.get().isActive()) {
+//            throw new IllegalArgumentException("User not active");
+//        }
 
         final List<GrantedAuthority> grantedAuthorities = user.get()
                 .getRoleUser()
@@ -39,6 +42,7 @@ public class DomainUserService implements UserDetailsService {
                 .username(userRecover.getPseudo())
                 .password(userRecover.getPassword())
                 .authorities(grantedAuthorities)
+                .disabled(!userRecover.isActive())
                 .roles()
                 .build()).orElseThrow(() -> new IllegalArgumentException("User not found"));
     }

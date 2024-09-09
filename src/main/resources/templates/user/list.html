@@ -63,6 +63,12 @@
                         <form th:action="@{/users/delete/{id}(id=${user.id})}" method="post" style="display:inline;">
                             <button type="submit" class="delete-btn">Supprimer</button>
                         </form>
+
+                        <form th:action="@{/users/status/{id}(id=${user.id})}" method="post" style="display:inline;">
+                            <button type="submit" th:text="${user.isActive() ? 'Désactiver' : 'Activer'}"
+                                    th:class="${user.isActive() ? 'deactivate-btn' : 'activate-btn'}">
+                            </button>
+                        </form>
                     </td>
                 </tr>
                 </tbody>
@@ -84,6 +90,38 @@
         <div class="modal-footer">
             <button id="confirmYes" class="modal-btn yes-btn">Oui</button>
             <button id="confirmNo" class="modal-btn no-btn">Non</button>
+        </div>
+    </div>
+</div>
+
+<div id="confirmationModale" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>ATTENTION !!!</h2>
+        </div>
+        <div class="modal-body">
+            <p>Voulez-vous desactiver cet utilisareur ?</p>
+        </div>
+        <div class="modal-footer">
+            <button id="confirmYese" class="modal-btn yes-btn">Oui</button>
+            <button id="confirmNoe" class="modal-btn no-btn">Non</button>
+        </div>
+    </div>
+</div>
+
+<div id="confirmationModalee" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>ATTENTION !!!</h2>
+        </div>
+        <div class="modal-body">
+            <p>Voulez-vous activer cet utilisateur ?</p>
+        </div>
+        <div class="modal-footer">
+            <button id="confirmYesee" class="modal-btn yes-btn">Oui</button>
+            <button id="confirmNoee" class="modal-btn no-btn">Non</button>
         </div>
     </div>
 </div>

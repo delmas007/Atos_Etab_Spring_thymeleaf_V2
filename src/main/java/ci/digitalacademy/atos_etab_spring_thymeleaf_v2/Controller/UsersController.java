@@ -58,6 +58,16 @@ public class UsersController {
         return "user/list";
     }
 
+    @PostMapping("/status/{id}")
+    public String toggleUserStatus(@PathVariable Long id) {
+        Optional<UserDTO> userDTO = userService.findOne(id);
+        UserDTO userDTO1 = userDTO.get();
+        userDTO1.setActive(!userDTO1.isActive());
+        userService.save(userDTO1);
+        return "redirect:/users";
+    }
+
+
     @PostMapping
     public String saveUser(UserDTO user){
         user.setCreationDate(Date.from(Instant.now()));

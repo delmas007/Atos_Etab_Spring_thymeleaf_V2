@@ -237,3 +237,30 @@ td {
     text-decoration: none;
     color: #1F1F1F;
 }
+
+/*.activate-btn {*/
+/*    background-color: green;*/
+/*    color: white;*/
+/*}*/
+
+/*.deactivate-btn {*/
+/*    background-color: red;*/
+/*    color: white;*/
+/*}*/
+
+.activate-btn {
+    background-color: green;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.deactivate-btn {
+    background-color: red;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+

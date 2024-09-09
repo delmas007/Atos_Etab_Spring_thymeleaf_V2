@@ -42,7 +42,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public Optional<UserDTO> findOne(Long id) {
-        return Optional.empty();
+        return userRepository.findById(id).map(user -> userMapper.fromEntity(user));
     }
 
     @Override
