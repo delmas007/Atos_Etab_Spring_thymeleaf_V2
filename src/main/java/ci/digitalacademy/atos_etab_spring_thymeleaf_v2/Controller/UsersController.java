@@ -91,11 +91,20 @@ public class UsersController {
 
     @GetMapping("/{id}")
     public String showUpdateUserForm(HttpServletRequest request, Model model, @PathVariable Long id){
+        List<RoleUserDTO> all = roleUserService.getAll();
         String currentUrl = request.getRequestURI();
         Optional<UserDTO> user = userService.findOne(id);
+        RegistrationUserDTO userDTO = new RegistrationUserDTO();
+        userDTO.setId(user.get().getId());
+        userDTO.setPseudo(user.get().getPseudo());
+        userDTO.setCreationDate(user.get().getCreationDate());
+        userDTO.setActive(user.get().getActive());
+        userDTO.setRole(user.get().getRoleUser().stream().findFirst().get().getId());
+        model.addAttribute("roles", all);
+//        roleUserService.findOne(user.get().getRoleUser().stream().findFirst().get().getId());
         model.addAttribute("currentUrl", currentUrl);
         if(user.isPresent()){
-            model.addAttribute("user", user.get());
+            model.addAttribute("user", userDTO);
             return "user/forms";
         }else {
             return "redirect:/users";

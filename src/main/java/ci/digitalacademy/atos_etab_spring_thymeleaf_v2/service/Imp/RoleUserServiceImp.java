@@ -41,7 +41,9 @@ public class RoleUserServiceImp implements RoleUserService {
 
     @Override
     public Optional<RoleUserDTO> findOne(Long id) {
-        return Optional.empty();
+        return roleUserRepository.findById(id).map(role -> {
+            return roleUserMapper.fromEntity(role);
+        });
     }
 
     @Override
