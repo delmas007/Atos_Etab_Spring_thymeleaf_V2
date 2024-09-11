@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface AbsenceService {
     AbsenceDTO save(AbsenceDTO AbsenceDTO);
     AbsenceDTO update(AbsenceDTO AbsenceDTO);
+//    AbsenceDTO updatePartiel(AbsenceDTO AbsenceDTO);
     AbsenceDTO update(AbsenceDTO AbsenceDTO, Long id);
     AbsenceDTO updatePartiel(AbsenceDTO AbsenceDTO, Long id);
     void delete(Long id);

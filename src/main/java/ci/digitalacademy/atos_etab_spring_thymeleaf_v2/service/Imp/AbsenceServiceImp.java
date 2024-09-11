@@ -5,6 +5,7 @@ import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.AbsenceService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Mapper.AbsenceMapper;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Mapper.AbsenceMapperr;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.AbsenceDTO;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.mapping.AbsenceMapping;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.utils.SlugifyUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,16 @@ public class AbsenceServiceImp implements AbsenceService {
     public AbsenceDTO save(AbsenceDTO AbsenceDTO) {
         return absenceMapper.fromEntity(absenceRepository.save(absenceMapper.toEntity(AbsenceDTO)));
     }
+
+//    @Override
+//    public AbsenceDTO update(AbsenceDTO AbsenceDTO) {
+//        return findOne(AbsenceDTO.getId()).map(existingAbsence -> {
+//                existingAbsence.setAbsenceDate(AbsenceDTO.getAbsenceDate());
+//                existingAbsence.setAbsenceNumber(AbsenceDTO.getAbsenceNumber());
+//                existingAbsence.setStudent(AbsenceDTO.getStudent());
+//            return save(existingAbsence);
+//        }).orElseThrow(() -> new RuntimeException("Absence not found"));
+//    }
 
     @Override
     public AbsenceDTO update(AbsenceDTO AbsenceDTO) {
@@ -42,14 +53,22 @@ public class AbsenceServiceImp implements AbsenceService {
     @Override
     public AbsenceDTO update(AbsenceDTO absenceDTO, Long id) {
         absenceDTO.setId(id);
-        return save(absenceDTO);
+        return update(absenceDTO);
     }
 
     @Override
     public AbsenceDTO updatePartiel(AbsenceDTO absenceDTO, Long id) {
-        absenceDTO.setId(id);
-        return update(absenceDTO);
+        return absenceRepository.findById(id).map(absence -> {
+            AbsenceMapping.partialUpdate(absence, absenceDTO);
+            return absence;
+        }).map(absenceRepository::save).map(absenceMapper::fromEntity).orElseThrow(() -> new RuntimeException("Absence not found"));
     }
+
+//    @Override
+//    public AbsenceDTO updatePartiel(AbsenceDTO absenceDTO, Long id) {
+//        absenceDTO.setId(id);
+//        return update(absenceDTO);
+//    }
 
     @Override
     public void delete(Long id) {
