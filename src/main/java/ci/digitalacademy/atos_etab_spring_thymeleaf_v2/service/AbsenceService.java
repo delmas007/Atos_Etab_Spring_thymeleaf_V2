@@ -8,7 +8,11 @@ import java.util.Optional;
 public interface AbsenceService {
     AbsenceDTO save(AbsenceDTO AbsenceDTO);
     AbsenceDTO update(AbsenceDTO AbsenceDTO);
+    AbsenceDTO update(AbsenceDTO AbsenceDTO, Long id);
+    AbsenceDTO updatePartiel(AbsenceDTO AbsenceDTO, Long id);
     void delete(Long id);
     List<AbsenceDTO> getAll();
     Optional<AbsenceDTO> findOne(Long id);
+
+    AbsenceDTO saveAbsence(AbsenceDTO absence);
 }

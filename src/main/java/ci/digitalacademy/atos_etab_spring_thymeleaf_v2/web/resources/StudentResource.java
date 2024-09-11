@@ -26,7 +26,7 @@ public class StudentResource {
     @ApiResponse(responseCode = "201", description = "Student created")
     @Operation(summary = "Create a new student", description = "Create a new student")
     public ResponseEntity<StudentDTO> saveStudent(@Parameter(required = true ,description = "student required") @RequestBody  StudentDTO student){
-        log.info("REST Request to save Student : {}", student);
+        log.debug("REST Request to save Student : {}", student);
         return new ResponseEntity<>(studentService.save(student), HttpStatus.CREATED);
     }
 
@@ -37,7 +37,7 @@ public class StudentResource {
     })
     @Operation(summary = "Update an existing student", description = "Update an existing student")
     StudentDTO updateStudent(@RequestBody  StudentDTO student,@PathVariable Long id){
-        log.info("REST Request to update Student : {}", student);
+        log.debug("REST Request to update Student : {}", student);
         return studentService.update(student, id);
     }
 
@@ -48,7 +48,7 @@ public class StudentResource {
     })
     @Operation(summary = "Get all students", description = "Get all students")
     public List<StudentDTO> getAllStudent(){
-        log.info("REST Request to get all Students");
+        log.debug("REST Request to get all Students");
         return studentService.getAll();
     }
 
@@ -60,7 +60,7 @@ public class StudentResource {
     })
     @Operation(summary = "Get a student by id", description = "Get a student by id")
     public ResponseEntity<?> getStudentById(@PathVariable Long id){
-        log.info("REST Request to get Student : {}", id);
+        log.debug("REST Request to get Student : {}", id);
         Optional<StudentDTO> studentDTO = studentService.findOne(id);
         if (studentDTO.isPresent()){
             return new ResponseEntity<>(studentDTO.get(), HttpStatus.OK);
@@ -76,7 +76,7 @@ public class StudentResource {
     })
     @Operation(summary = "Delete a student by id", description = "Delete a student by id")
     public void deleteStudent(@PathVariable Long id){
-        log.info("REST Request to delete Student : {}", id);
+        log.debug("REST Request to delete Student : {}", id);
         studentService.delete(id);
     }
 

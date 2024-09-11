@@ -1,5 +1,6 @@
 package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 

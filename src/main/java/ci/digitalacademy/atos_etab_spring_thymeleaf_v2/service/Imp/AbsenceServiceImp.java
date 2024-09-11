@@ -3,7 +3,9 @@ package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Imp;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.repository.AbsenceRepository;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.AbsenceService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Mapper.AbsenceMapper;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Mapper.AbsenceMapperr;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.AbsenceDTO;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.utils.SlugifyUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AbsenceServiceImp implements AbsenceService {
     private final AbsenceRepository absenceRepository;
-    private final AbsenceMapper absenceMapper;
+    private final AbsenceMapperr absenceMapper;
 
     @Override
     public AbsenceDTO save(AbsenceDTO AbsenceDTO) {
@@ -23,11 +25,30 @@ public class AbsenceServiceImp implements AbsenceService {
 
     @Override
     public AbsenceDTO update(AbsenceDTO AbsenceDTO) {
-        return findOne(AbsenceDTO.getAbsenceNumber()).map(existingAbsence -> {
-            existingAbsence.setAbsenceDate(AbsenceDTO.getAbsenceDate());
-            existingAbsence.setAbsenceDate(AbsenceDTO.getAbsenceDate());
+        return findOne(AbsenceDTO.getId()).map(existingAbsence -> {
+            if (AbsenceDTO.getAbsenceDate() != null){
+                existingAbsence.setAbsenceDate(AbsenceDTO.getAbsenceDate());
+            }
+            if (AbsenceDTO.getAbsenceNumber() != null){
+                existingAbsence.setAbsenceNumber(AbsenceDTO.getAbsenceNumber());
+            }
+            if (AbsenceDTO.getStudent() != null){
+                existingAbsence.setStudent(AbsenceDTO.getStudent());
+            }
             return save(existingAbsence);
         }).orElseThrow(() -> new RuntimeException("Absence not found"));
+    }
+
+    @Override
+    public AbsenceDTO update(AbsenceDTO absenceDTO, Long id) {
+        absenceDTO.setId(id);
+        return save(absenceDTO);
+    }
+
+    @Override
+    public AbsenceDTO updatePartiel(AbsenceDTO absenceDTO, Long id) {
+        absenceDTO.setId(id);
+        return update(absenceDTO);
     }
 
     @Override
@@ -47,5 +68,12 @@ public class AbsenceServiceImp implements AbsenceService {
         return absenceRepository.findById(id).map(Absence -> {
             return absenceMapper.fromEntity(Absence);
         });
+    }
+
+    @Override
+    public AbsenceDTO saveAbsence(AbsenceDTO absence) {
+        final String slug = SlugifyUtils.generate(absence.getAbsenceNumber().toString());
+        absence.setSlug(slug);
+        return save(absence);
     }
 }

@@ -32,8 +32,8 @@ public  class PersonDTO {
 
     @ExcelProperty("Genre")
     private Gender gender;
-    private Address address;
-    private User user;
+    private AddressDTO address;
+    private UserDTO user;
 
 
 }

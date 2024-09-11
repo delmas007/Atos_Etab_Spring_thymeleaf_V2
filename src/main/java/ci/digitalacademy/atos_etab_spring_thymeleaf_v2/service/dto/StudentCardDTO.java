@@ -17,5 +17,5 @@ public class StudentCardDTO {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate expirationDate;
-    private Student student;
+    private StudentDTO student;
 }
