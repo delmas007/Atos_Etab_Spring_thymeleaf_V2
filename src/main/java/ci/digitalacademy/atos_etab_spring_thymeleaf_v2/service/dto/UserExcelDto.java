@@ -22,6 +22,6 @@ public class UserExcelDto {
     @ExcelProperty("Roles")
     private String roleUser;
 
-    @ExcelProperty("School")
-    private String school;
+//    @ExcelProperty("School")
+//    private String school;
 }

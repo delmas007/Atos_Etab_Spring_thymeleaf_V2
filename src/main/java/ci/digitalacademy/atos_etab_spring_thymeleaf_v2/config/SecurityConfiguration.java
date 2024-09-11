@@ -23,6 +23,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/icon/**").permitAll()
                                 .requestMatchers("/js/**").permitAll()
                                 .requestMatchers("/excels/**").permitAll()
+                                .requestMatchers("/pdf/**").permitAll()
                                 .requestMatchers("/schools/**").permitAll()
                                 .requestMatchers("/settings/**").permitAll()
                                 .requestMatchers("api/students/**").permitAll()

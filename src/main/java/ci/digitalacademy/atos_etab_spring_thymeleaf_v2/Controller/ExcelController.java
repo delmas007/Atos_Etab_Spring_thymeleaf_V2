@@ -4,6 +4,8 @@ import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.TeacherService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.UserService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.*;
 import com.alibaba.excel.EasyExcel;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 @Controller
 @RequestMapping("excels")
@@ -29,11 +33,11 @@ public class ExcelController {
     private final UserService userService;
 
     @GetMapping("/students")
-    public String exportStudentToExcel() throws IOException {
+    public void exportStudentToExcel(HttpServletResponse response) throws IOException {
         List<StudentDTO> studentDtos = studentService.getAll();
 
         List<StudentExcelDTO> studentExcelDTOS = studentDtos.stream().map(student -> {
-            StudentExcelDTO dto = StudentExcelDTO.builder()
+            return StudentExcelDTO.builder()
                     .phoneNumberFather(student.getPhoneNumberFather())
                     .phoneNumber(student.getPhoneNumber())
                     .firstName(student.getFirstName())
@@ -42,50 +46,38 @@ public class ExcelController {
                     .gender(student.getGender().name())
                     .matricule(student.getMatricule())
                     .build();
-            return dto;
         }).toList();
 
-        String folderPath = "C:\\Users\\angam\\Desktop\\Atos\\Atos_Etab_Spring_thymeleaf_V2\\src\\main\\resources\\excel";
-        File folder = new File(folderPath);
-        if (!folder.exists()) {
-            folder.mkdirs();
-        }
 
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=students.xlsx");
 
-        String fileName = "students.xlsx";
-        File file = new File(folderPath + File.separator + fileName);
-
-        try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-            EasyExcel.write(fileOutputStream, StudentExcelDTO.class)
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            EasyExcel.write(outputStream, StudentExcelDTO.class)
                     .sheet("Students")
                     .doWrite(studentExcelDTOS);
+
+            try (Workbook workbook = new XSSFWorkbook(new ByteArrayInputStream(outputStream.toByteArray()))) {
+                Sheet sheet = workbook.getSheet("Students");
+
+                for (int i = 0; i < sheet.getRow(0).getLastCellNum(); i++) {
+                    sheet.autoSizeColumn(i);
+                }
+
+                try (ServletOutputStream responseOutputStream = response.getOutputStream()) {
+                    workbook.write(responseOutputStream);
+                    responseOutputStream.flush();
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to write Excel file: " + e.getMessage(), e);
         }
-
-        try (FileInputStream fileInputStream = new FileInputStream(file);
-             Workbook workbook = new XSSFWorkbook(fileInputStream);
-             FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-
-            Sheet sheet = workbook.getSheet("Students");
-
-
-            for (int i = 0; i < sheet.getRow(0).getLastCellNum(); i++) {
-                sheet.autoSizeColumn(i);
-            }
-
-            workbook.write(fileOutputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to adjust column widths: " + e.getMessage(), e);
-        }
-
-        return "redirect:/reports";
     }
 
+
     @GetMapping("/teachers")
-    public String exportTeacherToExcel() throws IOException {
+    public void exportTeacherToExcel(HttpServletResponse response) throws IOException {
         List<TeacherDTO> teacherDTOS = teacherService.getAll();
 
         List<TeacherExcelDTO> teacherExcelDTOS = teacherDTOS.stream().map(teacherDTO -> {
@@ -102,48 +94,38 @@ public class ExcelController {
             return dto;
         }).toList();
 
-        String folderPath = "C:\\Users\\angam\\Desktop\\Atos\\Atos_Etab_Spring_thymeleaf_V2\\src\\main\\resources\\excel";
-        File folder = new File(folderPath);
-        if (!folder.exists()) {
-            folder.mkdirs();
-        }
+
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=teachers.xlsx");
 
 
-        String fileName = "teachers.xlsx";
-        File file = new File(folderPath + File.separator + fileName);
-
-
-        try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-            EasyExcel.write(fileOutputStream, TeacherExcelDTO.class)
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            EasyExcel.write(outputStream, TeacherExcelDTO.class)
                     .sheet("Teachers")
                     .doWrite(teacherExcelDTOS);
+
+
+            try (Workbook workbook = new XSSFWorkbook(new ByteArrayInputStream(outputStream.toByteArray()))) {
+                Sheet sheet = workbook.getSheet("Teachers");
+
+                for (int i = 0; i < sheet.getRow(0).getLastCellNum(); i++) {
+                    sheet.autoSizeColumn(i);
+                }
+
+                try (ServletOutputStream responseOutputStream = response.getOutputStream()) {
+                    workbook.write(responseOutputStream);
+                    responseOutputStream.flush();
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to write Excel file: " + e.getMessage(), e);
         }
-
-        try (FileInputStream fileInputStream = new FileInputStream(file);
-             Workbook workbook = new XSSFWorkbook(fileInputStream);
-             FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-
-            Sheet sheet = workbook.getSheet("Teachers");
-
-
-            for (int i = 0; i < sheet.getRow(0).getLastCellNum(); i++) {
-                sheet.autoSizeColumn(i);
-            }
-
-            workbook.write(fileOutputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to adjust column widths: " + e.getMessage(), e);
-        }
-
-        return "redirect:/reports";
     }
 
+
     @GetMapping("/users")
-    public String exportUserToExcel() throws IOException {
+    public void exportUserToExcel(HttpServletResponse response) throws IOException {
         List<UserDTO> userDTOS = userService.getAll();
 
         List<UserExcelDto> userExcelDtos = userDTOS.stream().map(userDTO -> {
@@ -153,49 +135,38 @@ public class ExcelController {
                     .roleUser(userDTO.getRoleUser().stream()
                             .map(RoleUserDTO::getRole)
                             .collect(Collectors.joining(", ")))
-                    .school(userDTO.getSchool().getName())
+//                    .school(userDTO.getSchool().getName())
                     .build();
             return dto;
         }).toList();
 
-        String folderPath = "C:\\Users\\angam\\Desktop\\Atos\\Atos_Etab_Spring_thymeleaf_V2\\src\\main\\resources\\excel";
-        File folder = new File(folderPath);
-        if (!folder.exists()) {
-            folder.mkdirs();
-        }
+
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=users.xlsx");
 
 
-        String fileName = "users.xlsx";
-        File file = new File(folderPath + File.separator + fileName);
-
-
-        try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-            EasyExcel.write(fileOutputStream, UserExcelDto.class)
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            EasyExcel.write(outputStream, UserExcelDto.class)
                     .sheet("Users")
                     .doWrite(userExcelDtos);
+
+            try (Workbook workbook = new XSSFWorkbook(new ByteArrayInputStream(outputStream.toByteArray()))) {
+                Sheet sheet = workbook.getSheet("Users");
+
+                for (int i = 0; i < sheet.getRow(0).getLastCellNum(); i++) {
+                    sheet.autoSizeColumn(i);
+                }
+
+                try (ServletOutputStream responseOutputStream = response.getOutputStream()) {
+                    workbook.write(responseOutputStream);
+                    responseOutputStream.flush();
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to write Excel file: " + e.getMessage(), e);
         }
-
-        try (FileInputStream fileInputStream = new FileInputStream(file);
-             Workbook workbook = new XSSFWorkbook(fileInputStream);
-             FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-
-            Sheet sheet = workbook.getSheet("Users");
-
-
-            for (int i = 0; i < sheet.getRow(0).getLastCellNum(); i++) {
-                sheet.autoSizeColumn(i);
-            }
-
-            workbook.write(fileOutputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to adjust column widths: " + e.getMessage(), e);
-        }
-
-        return "redirect:/reports";
     }
+
 
 }
