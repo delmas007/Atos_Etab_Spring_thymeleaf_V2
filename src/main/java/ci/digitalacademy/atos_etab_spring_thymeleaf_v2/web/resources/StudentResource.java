@@ -1,6 +1,8 @@
 package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.web.resources;
 
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.StudentService;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.RegistrationStudentDTO;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.ResponseRegisterStudentDTO;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.StudentDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -78,6 +80,13 @@ public class StudentResource {
     public void deleteStudent(@PathVariable Long id){
         log.debug("REST Request to delete Student : {}", id);
         studentService.delete(id);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/registration")
+    public ResponseRegisterStudentDTO registrationStudent(@RequestBody RegistrationStudentDTO registrationStudentDTO){
+        log.debug("REST Request to registration Student : {}", registrationStudentDTO);
+        return studentService.registrationStudent(registrationStudentDTO);
     }
 
 

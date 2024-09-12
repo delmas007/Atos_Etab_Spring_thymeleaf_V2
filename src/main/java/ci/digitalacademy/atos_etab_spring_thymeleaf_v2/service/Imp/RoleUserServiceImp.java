@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -61,5 +63,12 @@ public class RoleUserServiceImp implements RoleUserService {
             });
         }
         return getAll();
+    }
+
+    @Override
+    public Set<RoleUserDTO> findByRole(String user) {
+        return roleUserRepository.findByRole(user).stream().map(role -> {
+            return roleUserMapper.fromEntity(role);
+        }).collect(Collectors.toSet());
     }
 }

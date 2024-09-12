@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-@Builder
 public class AddressDTO {
     private Long id;
     private String city;

@@ -2,21 +2,38 @@ package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Imp;
 
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.model.Gender;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.repository.StudentRepository;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.security.AuthorityConstants;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.AddressService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Mapper.StudentMapperr;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.RoleUserService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.StudentService;
-import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.StudentDTO;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.UserService;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class StudentServiceImp implements StudentService {
 
+    private static final Logger log = LoggerFactory.getLogger(StudentServiceImp.class);
     private final StudentRepository studentRepository;
     private final StudentMapperr studentMapper;
+    private final AddressService addressService;
+    private final ModelMapper modelMapper;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserService userService;
+    private final RoleUserService roleUserService;
 //    private final StudentMapper studentMapper;
 
     @Override
@@ -70,5 +87,30 @@ public class StudentServiceImp implements StudentService {
                 address -> {
             return studentMapper.fromEntity(address);
         }).toList();
+    }
+
+    @Override
+    @Transactional
+    public ResponseRegisterStudentDTO registrationStudent(RegistrationStudentDTO registrationStudentDTO) {
+
+        AddressDTO address = modelMapper.map(registrationStudentDTO, AddressDTO.class);
+        address =  addressService.save(address);
+
+        Set<RoleUserDTO> roleUserDTOS = roleUserService.findByRole(AuthorityConstants.USER);
+        UserDTO user = modelMapper.map(registrationStudentDTO, UserDTO.class);
+        String password = UUID.randomUUID().toString();
+        user.setPassword(bCryptPasswordEncoder.encode(password));
+        user.setRoleUser(roleUserDTOS);
+        user = userService.save(user);
+
+        StudentDTO student = modelMapper.map(registrationStudentDTO, StudentDTO.class);
+        student.setUser(user);
+        student.setAddress(address);
+        student = save(student);
+
+        ResponseRegisterStudentDTO response = new ResponseRegisterStudentDTO();
+        response.setAddress(address);
+        response.setStudent(student);
+        return response;
     }
 }

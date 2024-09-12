@@ -26,7 +26,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/pdf/**").permitAll()
                                 .requestMatchers("/schools/**").permitAll()
                                 .requestMatchers("/settings/**").permitAll()
-                                .requestMatchers("api/**").permitAll()
+                                .requestMatchers("/api/**").permitAll()
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
                                 .requestMatchers("/").permitAll()
