@@ -30,7 +30,7 @@ public class RoleUserServiceImp implements RoleUserService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(String id) {
         roleUserRepository.deleteById(id);
     }
 
@@ -42,7 +42,7 @@ public class RoleUserServiceImp implements RoleUserService {
     }
 
     @Override
-    public Optional<RoleUserDTO> findOne(Long id) {
+    public Optional<RoleUserDTO> findOne(String id) {
         return roleUserRepository.findById(id).map(role -> {
             return roleUserMapper.fromEntity(role);
         });

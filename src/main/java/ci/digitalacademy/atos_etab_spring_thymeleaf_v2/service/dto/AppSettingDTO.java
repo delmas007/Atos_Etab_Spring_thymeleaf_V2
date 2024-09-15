@@ -11,6 +11,7 @@ import lombok.ToString;
 @ToString
 public class AppSettingDTO {
     private Long id;
+    private String slug;
     private String smtpServer;
     private Long smtpPort;
     private String smtpUsername;

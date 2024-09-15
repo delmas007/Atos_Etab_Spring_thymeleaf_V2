@@ -16,7 +16,7 @@ public  class PersonDTO {
 
     @ExcelProperty("ID")
     private Long id ;
-
+    private String slug;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
 

@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 public class SchoolDTO {
     private Long id;
+    private String slug;
     private String name;
     private String logo;
     private AppSettingDTO appSetting;

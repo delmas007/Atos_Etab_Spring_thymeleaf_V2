@@ -19,6 +19,8 @@ public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
+    @Column(unique = true)
+    private String slug;
     private String pseudo;
     private String password;
 

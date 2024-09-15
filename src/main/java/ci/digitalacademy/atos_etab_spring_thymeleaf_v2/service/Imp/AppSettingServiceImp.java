@@ -5,6 +5,7 @@ import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.AppSettingService
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Mapper.AppSettingMapper;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Mapper.AppSettingMapperr;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.AppSettingDTO;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.utils.SlugifyUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,33 +22,59 @@ public class AppSettingServiceImp implements AppSettingService {
     private final AppSettingMapperr appSettingMapper;
     @Override
     public AppSettingDTO save(AppSettingDTO appSettingDTO) {
+        log.debug("Request to save AppSetting : {}", appSettingDTO);
+        AppSettingDTO AppSettingDTOfirst = getAll().stream().findFirst().orElse(null);
+        if (AppSettingDTOfirst != null) {
+            return null;
+        }
+        appSettingDTO.setSlug(SlugifyUtils.generate(appSettingDTO.getSmtpUsername()));
         return appSettingMapper.fromEntity(appSettingRepository.save(appSettingMapper.toEntity(appSettingDTO)));
     }
 
     @Override
     public AppSettingDTO update(AppSettingDTO appSettingDTO) {
-        return findOne(appSettingDTO.getId()).map(existingAppSetting -> {
-            existingAppSetting.setSmtpPassword(appSettingDTO.getSmtpPassword());
-            existingAppSetting.setSmtpPort(appSettingDTO.getSmtpPort());
+        log.debug("Request to update AppSetting : {}", appSettingDTO);
+        return findOneById(appSettingDTO.getId()).map(existingAppSetting -> {
+            if (appSettingDTO.getSmtpUsername() != null) {
+                existingAppSetting.setSmtpUsername(appSettingDTO.getSmtpUsername());
+            }
+            if (appSettingDTO.getSmtpPassword() != null) {
+                existingAppSetting.setSmtpPassword(appSettingDTO.getSmtpPassword());
+            }
+            if (appSettingDTO.getSmtpServer() != null) {
+                existingAppSetting.setSmtpServer(appSettingDTO.getSmtpServer());
+            }
+            if (appSettingDTO.getSmtpPort() != null) {
+                existingAppSetting.setSmtpPort(appSettingDTO.getSmtpPort());
+            }
             return save(existingAppSetting);
         }).orElseThrow(() -> new RuntimeException("AppSetting not found"));
     }
 
     @Override
     public void delete(Long id) {
+        log.debug("Request to delete AppSetting : {}", id);
         appSettingRepository.deleteById(id);
     }
 
     @Override
     public List<AppSettingDTO> getAll() {
+        log.debug("Request to get all AppSetting");
         return appSettingRepository.findAll().stream().map(appSetting -> {
             return appSettingMapper.fromEntity(appSetting);
         }).toList();
     }
 
     @Override
-    public Optional<AppSettingDTO> findOne(Long id) {
+    public Optional<AppSettingDTO> findOneById(Long id) {
         return appSettingRepository.findById(id).map(address -> {
+            return appSettingMapper.fromEntity(address);
+        });
+    }
+
+    @Override
+    public Optional<AppSettingDTO> findOneBySlug(String Slug) {
+        return appSettingRepository.findBySlug(Slug).map(address -> {
             return appSettingMapper.fromEntity(address);
         });
     }

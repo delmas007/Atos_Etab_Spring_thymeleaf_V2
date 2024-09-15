@@ -23,9 +23,14 @@ public class SchoolResource {
     @PostMapping
     @ApiResponse(responseCode = "201", description = "Request to save school")
     @Operation(summary = "school new save", description = "this endpoint allow to save school")
-    public ResponseEntity<SchoolDTO> saveSchool(@RequestBody SchoolDTO schoolDTO){
+    public ResponseEntity<?> saveSchool(@RequestBody SchoolDTO schoolDTO){
         log.debug("REST Request to save school : {}", schoolDTO);
-        return new ResponseEntity<>(schoolService.save(schoolDTO), HttpStatus.CREATED);
+        SchoolDTO save = schoolService.save(schoolDTO);
+        if (save != null){
+            return new ResponseEntity<>(save, HttpStatus.CREATED);
+        }else {
+            return new ResponseEntity<>("AppSetting not found", HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping

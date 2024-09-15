@@ -18,6 +18,8 @@ public class AppSetting implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
+    private String slug;
     @Column(name = "smtp_server")
     private String smtpServer;
 

@@ -38,7 +38,7 @@ public class UserResource {
         return new ResponseEntity<>(userService.update(userDTO, id), HttpStatus.OK);
     }
 
-    @DeleteMapping("{/id}")
+    @DeleteMapping("/{id}")
     @ApiResponse(responseCode = "200", description = "User deleted")
     @Operation(summary = "Delete an existing User", description = "Delete an existing User")
     public void deleteUser(Long id){

@@ -45,7 +45,7 @@ public class RoleResource {
     @GetMapping("/{id}")
     @ApiResponse(responseCode = "201", description = "Request to get role")
     @Operation(summary = "Get role by id", description = "Get role by id")
-    public ResponseEntity<?> getOneRole(@PathVariable Long id){
+    public ResponseEntity<?> getOneRole(@PathVariable String id){
         log.debug("REST Request to get role : {}", id);
         Optional<RoleUserDTO> one = roleUserService.findOne(id);
         if (one.isPresent()){

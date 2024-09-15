@@ -99,7 +99,7 @@ public class UsersController {
         userDTO.setPseudo(user.get().getPseudo());
         userDTO.setCreationDate(user.get().getCreationDate());
         userDTO.setActive(user.get().getActive());
-        userDTO.setRole(user.get().getRoleUser().stream().findFirst().get().getId());
+        userDTO.setRole(user.get().getRoleUser().stream().findFirst().get().getRole());
         model.addAttribute("roles", all);
 //        roleUserService.findOne(user.get().getRoleUser().stream().findFirst().get().getId());
         model.addAttribute("currentUrl", currentUrl);

@@ -11,9 +11,9 @@ import java.util.Set;
 public interface RoleUserService {
     RoleUserDTO save(RoleUserDTO roleUserDTO);
     RoleUserDTO update(RoleUserDTO roleUserDTO);
-    void delete(Long id);
+    void delete(String id);
     List<RoleUserDTO> getAll();
-    Optional<RoleUserDTO> findOne(Long id);
+    Optional<RoleUserDTO> findOne(String id);
     List<RoleUserDTO> verifyExistingRoles();
     List<RoleUserDTO> initRoles(List<RoleUserDTO> roleUserDTO);
 

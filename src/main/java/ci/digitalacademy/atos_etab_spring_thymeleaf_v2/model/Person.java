@@ -16,6 +16,8 @@ public abstract class Person implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id ;
 
+    @Column(unique = true)
+    private String slug;
     @Column(name = "birthday")
     private LocalDate birthday;
 

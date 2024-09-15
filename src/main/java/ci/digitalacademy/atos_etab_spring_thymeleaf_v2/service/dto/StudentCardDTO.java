@@ -13,6 +13,7 @@ public class StudentCardDTO {
     private Long id;
     private String reference;
 
+    private String slug;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate issueDate;
 

@@ -15,6 +15,8 @@ public class StudentCards {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
+    private String slug;
     private String reference;
     private LocalDate issueDate;
     private LocalDate expirationDate;

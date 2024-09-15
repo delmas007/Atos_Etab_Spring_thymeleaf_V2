@@ -13,6 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class UserDTO {
     private Long id ;
+    private String slug;
     private String pseudo;
     private String password;
     private Date creationDate;

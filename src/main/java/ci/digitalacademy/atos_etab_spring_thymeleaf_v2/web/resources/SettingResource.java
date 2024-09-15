@@ -25,13 +25,19 @@ public class SettingResource {
     @ApiResponse(responseCode = "201", description = "Request to save setting")
     @Operation(summary = "setting new save", description = "this endpoint allow to save setting")
     public ResponseEntity<?>saveSetting(@RequestBody AppSettingDTO appSettingDTO){
-        return new ResponseEntity<>(settingService.save(appSettingDTO), HttpStatus.CREATED);
+        log.debug("REST Request to save setting : {}", appSettingDTO);
+        AppSettingDTO save = settingService.save(appSettingDTO);
+        if (save == null){
+            return new ResponseEntity<>("setting already exist", HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>(save, HttpStatus.CREATED);
     }
 
     @PutMapping
     @ApiResponse(responseCode = "200", description = "setting updated")
     @Operation(summary = "Update an existing setting", description = "Update an existing setting")
     public ResponseEntity<?>updateSetting(@RequestBody AppSettingDTO appSettingDTO){
+        log.debug("REST Request to update setting : {}", appSettingDTO);
         return new ResponseEntity<>(settingService.update(appSettingDTO), HttpStatus.OK);
     }
 
@@ -55,7 +61,7 @@ public class SettingResource {
     })
     @Operation(summary = "Get setting by id", description = "Get setting by id")
     public ResponseEntity<?>getOneSetting(@PathVariable Long id){
-        Optional<AppSettingDTO> one = settingService.findOne(id);
+        Optional<AppSettingDTO> one = settingService.findOneById(id);
         if (one.isPresent()){
             return new ResponseEntity<>(one.get(), HttpStatus.OK);
         }else {

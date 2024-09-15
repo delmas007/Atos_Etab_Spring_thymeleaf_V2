@@ -6,5 +6,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RegistrationUserDTO extends UserDTO{
-    private Long role;
+    private String role;
 }
