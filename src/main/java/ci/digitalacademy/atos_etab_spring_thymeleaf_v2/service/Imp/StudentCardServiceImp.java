@@ -22,12 +22,17 @@ public class StudentCardServiceImp implements StudentCardService {
 
     @Override
     public StudentCardDTO update(StudentCardDTO studentCardDTO) {
-//        return findOne(studentCardDTO.getStudent().).map(existingAddress -> {
-//            existingAddress.setFirstName(studentCardDTO.getFirstName());
-//            existingAddress.setLastName(studentCardDTO.getLastName());
-//            return save(existingAddress);
-//        }).orElseThrow(() -> new RuntimeException("Nom not found"));
-        return null;
+        return findOne(studentCardDTO.getStudent().getId()).map(existingAddress -> {
+            existingAddress.setReference(studentCardDTO.getReference());
+            existingAddress.setIssueDate(studentCardDTO.getIssueDate());
+            return save(existingAddress);
+        }).orElseThrow(() -> new RuntimeException("Nom not found"));
+    }
+
+    @Override
+    public StudentCardDTO update(StudentCardDTO studentCardDTO, Long id) {
+        studentCardDTO.setId(id);
+        return update(studentCardDTO);
     }
 
     @Override

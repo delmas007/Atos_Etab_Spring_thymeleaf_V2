@@ -29,6 +29,12 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    public UserDTO update(UserDTO userDTO, Long id) {
+        userDTO.setId(id);
+        return save(userDTO);
+    }
+
+    @Override
     public void delete(Long id) {
         userRepository.deleteById(id);
     }

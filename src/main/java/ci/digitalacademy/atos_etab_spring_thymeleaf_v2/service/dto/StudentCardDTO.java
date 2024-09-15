@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class StudentCardDTO {
+    private Long id;
     private String reference;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
