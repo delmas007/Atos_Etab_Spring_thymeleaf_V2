@@ -20,18 +20,18 @@ import java.util.Optional;
 public class StudentCardResource {
     private final StudentCardService studentCardService;
 
-    @PostMapping
+    @PostMapping("/{id}")
     @ApiResponse(responseCode = "201", description = "Request to save studentCard")
     @Operation(summary = "studentCard new save", description = "this endpoint allow to save studentCard")
-    public ResponseEntity<StudentCardDTO> saveStudentCard(StudentCardDTO studentCardDTO){
+    public ResponseEntity<StudentCardDTO> saveStudentCard(@RequestBody StudentCardDTO studentCardDTO,@PathVariable Long id){
         log.debug("REST Request to save StudentCard");
-        return new ResponseEntity<>(studentCardService.save(studentCardDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(studentCardService.save(studentCardDTO,id), HttpStatus.CREATED);
     }
 
     @PutMapping
     @ApiResponse(responseCode = "200", description = "StudentCard updated")
     @Operation(summary = "Update an existing StudentCard", description = "Update an existing StudentCard")
-    public ResponseEntity<StudentCardDTO> updateStudentCard(StudentCardDTO studentCardDTO){
+    public ResponseEntity<StudentCardDTO> updateStudentCard(@RequestBody StudentCardDTO studentCardDTO){
         log.debug("REST Request to update StudentCard");
         return new ResponseEntity<>(studentCardService.update(studentCardDTO), HttpStatus.OK);
     }
@@ -48,9 +48,24 @@ public class StudentCardResource {
             @ApiResponse(responseCode = "201", description = "Request to get StudentCard"),
             @ApiResponse(responseCode = "404", description = "StudentCard not found")
     })
-    public ResponseEntity<?> getOneStudentCard(@PathVariable Long id){
+    public ResponseEntity<?> getOneStudentCardById(@PathVariable Long id){
         log.debug("REST Request to get one StudentCard : {}", id);
-        Optional<StudentCardDTO> one = studentCardService.findOne(id);
+        Optional<StudentCardDTO> one = studentCardService.findOneById(id);
+        if (one.isPresent()){
+            return new ResponseEntity<>(one.get(), HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>("StudentCard not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/slug/{slug}")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Request to get StudentCard"),
+            @ApiResponse(responseCode = "404", description = "StudentCard not found")
+    })
+    public ResponseEntity<?> getOneStudentCardBySlug(@PathVariable String slug){
+        log.debug("REST Request to get one StudentCard : {}", slug);
+        Optional<StudentCardDTO> one = studentCardService.findOneBySlug(slug);
         if (one.isPresent()){
             return new ResponseEntity<>(one.get(), HttpStatus.OK);
         }else {

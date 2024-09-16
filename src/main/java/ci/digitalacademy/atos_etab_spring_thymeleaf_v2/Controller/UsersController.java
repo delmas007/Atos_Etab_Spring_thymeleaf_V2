@@ -66,7 +66,7 @@ public class UsersController {
 
     @PostMapping("/status/{id}")
     public String toggleUserStatus(@PathVariable Long id) {
-        Optional<UserDTO> userDTO = userService.findOne(id);
+        Optional<UserDTO> userDTO = userService.findOneById(id);
         UserDTO userDTO1 = userDTO.get();
         userDTO1.setActive(!userDTO1.getActive());
         userService.save(userDTO1);
@@ -93,7 +93,7 @@ public class UsersController {
     public String showUpdateUserForm(HttpServletRequest request, Model model, @PathVariable Long id){
         List<RoleUserDTO> all = roleUserService.getAll();
         String currentUrl = request.getRequestURI();
-        Optional<UserDTO> user = userService.findOne(id);
+        Optional<UserDTO> user = userService.findOneById(id);
         RegistrationUserDTO userDTO = new RegistrationUserDTO();
         userDTO.setId(user.get().getId());
         userDTO.setPseudo(user.get().getPseudo());

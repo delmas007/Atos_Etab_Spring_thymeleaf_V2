@@ -3,9 +3,12 @@ package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Imp;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.model.User;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.repository.UserRepository;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Mapper.UserMapper;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.SchoolService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.UserService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.UserDTO;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.utils.SlugifyUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -18,8 +21,15 @@ import java.util.Optional;
 public class UserServiceImp implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final SchoolService schoolService;
     @Override
     public UserDTO save(UserDTO userDTO) {
+        schoolService.getAll().stream().findFirst().ifPresent(schoolDTO -> {
+            userDTO.setSchool(schoolDTO);
+        });
+        userDTO.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+        userDTO.setSlug(SlugifyUtils.generate(userDTO.getPseudo()));
         return userMapper.fromEntity(userRepository.save(userMapper.toEntity(userDTO)));
     }
 
@@ -47,8 +57,13 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public Optional<UserDTO> findOne(Long id) {
+    public Optional<UserDTO> findOneById(Long id) {
         return userRepository.findById(id).map(user -> userMapper.fromEntity(user));
+    }
+
+    @Override
+    public Optional<UserDTO> findOneBySlug(String slug) {
+        return userRepository.findBySlug(slug).map(user -> userMapper.fromEntity(user));
     }
 
     @Override

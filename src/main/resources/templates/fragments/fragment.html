@@ -31,6 +31,13 @@
             <a  th:href="@{/settings/update}"><img th:src="@{../icon/setting.png}" style="width: 30px;height: 30px" alt=""> Parametre smtp</a></li>
         <li th:classappend="${currentUrl == '/schools/update'} ? 'active'">
             <a  th:href="@{/schools/update}"><img th:src="@{../icon/setting.png}" style="width: 30px;height: 30px" alt=""> Parametre ecole</a></li>
+
+        <li th:classappend="${currentUrl == '/swagger-ui/index.html'} ? 'active'">
+            <a  th:href="@{http://localhost:8080/swagger-ui/index.html}"><img th:src="@{../icon/setting.png}" style="width: 30px;height: 30px" alt=""> Doc swagger</a></li>
+
+        <li th:classappend="${currentUrl == '/documenter.getpostman.com/view/28612623/2sAXqp93yF'} ? 'active'">
+            <a  th:href="@{https://documenter.getpostman.com/view/28612623/2sAXqp93yF}"><img th:src="@{../icon/setting.png}" style="width: 30px;height: 30px" alt=""> Doc postman</a></li>
+
         <li th:classappend="${currentUrl == '/reports'} ? 'active'">
             <a  th:href="@{/reports}"><img th:src="@{../icon/rapport.png}" style="width: 30px;height: 30px" alt=""> Rapport</a></li>
     </ul>

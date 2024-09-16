@@ -10,7 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @RestController
@@ -23,9 +25,9 @@ public class SchoolResource {
     @PostMapping
     @ApiResponse(responseCode = "201", description = "Request to save school")
     @Operation(summary = "school new save", description = "this endpoint allow to save school")
-    public ResponseEntity<?> saveSchool(@RequestBody SchoolDTO schoolDTO){
+    public ResponseEntity<?> saveSchool(@RequestPart(name = "school") SchoolDTO schoolDTO,@RequestPart(name = "file") MultipartFile file) throws IOException {
         log.debug("REST Request to save school : {}", schoolDTO);
-        SchoolDTO save = schoolService.save(schoolDTO);
+        SchoolDTO save = schoolService.save(schoolDTO,file);
         if (save != null){
             return new ResponseEntity<>(save, HttpStatus.CREATED);
         }else {

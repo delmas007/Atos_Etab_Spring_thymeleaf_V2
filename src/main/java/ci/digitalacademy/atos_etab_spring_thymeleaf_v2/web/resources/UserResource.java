@@ -25,7 +25,7 @@ public class UserResource {
     @PostMapping
     @ApiResponse(responseCode = "201", description = "Request to save User")
     @Operation(summary = "User new save", description = "this endpoint allow to save User")
-    public ResponseEntity<UserDTO> saveUser(UserDTO userDTO){
+    public ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO userDTO){
         log.debug("REST Request to save User : {}", userDTO);
         return new  ResponseEntity<>(userService.save(userDTO), HttpStatus.CREATED);
     }
@@ -33,7 +33,7 @@ public class UserResource {
     @PutMapping("/{id}")
     @ApiResponse(responseCode = "200", description = "User updated")
     @Operation(summary = "Update an existing User", description = "Update an existing User")
-    public ResponseEntity<UserDTO> updateUser(UserDTO userDTO, Long id){
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO,@PathVariable Long id){
         log.debug("REST Request to update User : {}", userDTO);
         return new ResponseEntity<>(userService.update(userDTO, id), HttpStatus.OK);
     }
@@ -59,9 +59,25 @@ public class UserResource {
             @ApiResponse(responseCode = "404", description = "User not found")
     })
     @Operation(summary = "Get User by id", description = "Get User by id")
-    public ResponseEntity<?> getUser(Long id){
+    public ResponseEntity<?> getUser(@PathVariable Long id){
         log.debug("REST Request to get User : {}", id);
-        Optional<UserDTO> one = userService.findOne(id);
+        Optional<UserDTO> one = userService.findOneById(id);
+        if (one.isPresent()){
+            return new ResponseEntity<>(one.get(), HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/slug/{slug}")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Request to get User"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
+    @Operation(summary = "Get User by id", description = "Get User by slug")
+    public ResponseEntity<?> getUser(@PathVariable String slug){
+        log.debug("REST Request to get User : {}", slug);
+        Optional<UserDTO> one = userService.findOneBySlug(slug);
         if (one.isPresent()){
             return new ResponseEntity<>(one.get(), HttpStatus.OK);
         }else {

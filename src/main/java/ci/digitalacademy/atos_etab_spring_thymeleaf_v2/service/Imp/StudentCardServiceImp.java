@@ -3,7 +3,9 @@ package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Imp;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.repository.StudentCardRepository;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Mapper.StudentCardMapper;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.StudentCardService;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.StudentService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.StudentCardDTO;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.utils.SlugifyUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,17 +17,29 @@ import java.util.Optional;
 public class StudentCardServiceImp implements StudentCardService {
     private final StudentCardMapper studentCardMapper;
     private final StudentCardRepository studentRepository;
+    private final StudentService studentService;
     @Override
-    public StudentCardDTO save(StudentCardDTO studentCardDTO) {
+    public StudentCardDTO save(StudentCardDTO studentCardDTO,Long id) {
+        studentCardDTO.setSlug(SlugifyUtils.generate(studentCardDTO.getReference()));
+        studentService.findOne(id).ifPresent(studentDTO -> {
+            studentCardDTO.setStudent(studentDTO);
+        });
         return studentCardMapper.fromEntity(studentRepository.save(studentCardMapper.toEntity(studentCardDTO)));
     }
 
     @Override
     public StudentCardDTO update(StudentCardDTO studentCardDTO) {
-        return findOne(studentCardDTO.getStudent().getId()).map(existingAddress -> {
-            existingAddress.setReference(studentCardDTO.getReference());
-            existingAddress.setIssueDate(studentCardDTO.getIssueDate());
-            return save(existingAddress);
+        return findOneById(studentCardDTO.getStudent().getId()).map(existingAddress -> {
+            if (studentCardDTO.getReference() != null) {
+                existingAddress.setReference(studentCardDTO.getReference());
+            }
+            if (studentCardDTO.getIssueDate() != null) {
+                existingAddress.setIssueDate(studentCardDTO.getIssueDate());
+            }
+            if (studentCardDTO.getExpirationDate() != null) {
+                existingAddress.setExpirationDate(studentCardDTO.getExpirationDate());
+            }
+            return save(existingAddress,studentCardDTO.getStudent().getId());
         }).orElseThrow(() -> new RuntimeException("Nom not found"));
     }
 
@@ -48,8 +62,15 @@ public class StudentCardServiceImp implements StudentCardService {
     }
 
     @Override
-    public Optional<StudentCardDTO> findOne(Long id) {
+    public Optional<StudentCardDTO> findOneById(Long id) {
         return studentRepository.findById(id).map(address -> {
+            return studentCardMapper.fromEntity(address);
+        });
+    }
+
+    @Override
+    public Optional<StudentCardDTO> findOneBySlug(String slug) {
+        return studentRepository.findBySlug(slug).map(address -> {
             return studentCardMapper.fromEntity(address);
         });
     }

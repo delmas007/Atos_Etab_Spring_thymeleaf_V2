@@ -55,14 +55,14 @@ public class StudentsCardController {
     public String saveCard(StudentCardDTO studentCardDTO){
         studentCardDTO.setReference(UUID.randomUUID().toString());
         studentCardDTO.setIssueDate(LocalDate.now());
-        studentCardService.save(studentCardDTO);
+        studentCardService.save(studentCardDTO, studentCardDTO.getStudent().getId());
         return "redirect:/cards";
     }
 
     @GetMapping("/{id}")
     public String showUpdateCardForm(HttpServletRequest request, Model model, @PathVariable Long id){
         String currentUrl = request.getRequestURI();
-        Optional<StudentCardDTO> user = studentCardService.findOne(id);
+        Optional<StudentCardDTO> user = studentCardService.findOneById(id);
         model.addAttribute("currentUrl", currentUrl);
         if(user.isPresent()){
             model.addAttribute("user", user.get());

@@ -12,7 +12,8 @@ public interface UserService {
     UserDTO update(UserDTO UserDTO,Long id);
     void delete(Long id);
     List<UserDTO> getAll();
-    Optional<UserDTO> findOne(Long id);
+    Optional<UserDTO> findOneById(Long id);
+    Optional<UserDTO> findOneBySlug(String id);
     List<UserDTO> initUser(List<UserDTO> UserDTO);
     List<UserDTO> findByCreatedDateLessThanAndRoleUserNameRole(Instant createdDate, String role);
 }

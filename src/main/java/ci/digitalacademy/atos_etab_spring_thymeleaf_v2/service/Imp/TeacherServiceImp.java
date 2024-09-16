@@ -3,6 +3,7 @@ package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Imp;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.model.Gender;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.repository.TeacherRepository;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Mapper.TeatcherMapperr;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.RoleUserService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.TeacherService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.TeacherDTO;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -17,17 +19,28 @@ public class TeacherServiceImp implements TeacherService {
 
     private final TeacherRepository teacherRepository;
     private final TeatcherMapperr teacherMapperr;
+    private final RoleUserService roleUserService;
 
     @Override
     public TeacherDTO save(TeacherDTO teacherDTO) {
+        roleUserService.findOne("USER").ifPresent(roleUserDTO -> {
+            teacherDTO.getUser().setRoleUser(Set.of(roleUserDTO));
+        });
         return teacherMapperr.fromEntity(teacherRepository.save(teacherMapperr.toEntity(teacherDTO)));
     }
 
     @Override
     public TeacherDTO update(TeacherDTO teacherDTO) {
         return findOne(teacherDTO.getId()).map(existingAddress -> {
-            existingAddress.setFirstName(teacherDTO.getFirstName());
-            existingAddress.setLastName(teacherDTO.getLastName());
+            if (teacherDTO.getFirstName() != null) {
+                existingAddress.setFirstName(teacherDTO.getFirstName());
+            }
+            if (teacherDTO.getLastName() != null) {
+                existingAddress.setLastName(teacherDTO.getLastName());
+            }
+            if (teacherDTO.getSpecialty() != null) {
+                existingAddress.setSpecialty(teacherDTO.getSpecialty());
+            }
             return save(existingAddress);
         }).orElseThrow(() -> new RuntimeException("Nom not found"));
     }

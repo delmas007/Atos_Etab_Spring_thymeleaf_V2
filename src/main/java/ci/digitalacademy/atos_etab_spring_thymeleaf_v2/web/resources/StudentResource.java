@@ -1,6 +1,7 @@
 package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.web.resources;
 
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.StudentService;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.FileStudentDTO;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.RegistrationStudentDTO;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.ResponseRegisterStudentDTO;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.StudentDTO;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +31,17 @@ public class StudentResource {
     @Operation(summary = "Create a new student", description = "Create a new student")
     public ResponseEntity<StudentDTO> saveStudent(@Parameter(required = true ,description = "student required") @RequestBody  StudentDTO student){
         log.debug("REST Request to save Student : {}", student);
-        return new ResponseEntity<>(studentService.save(student), HttpStatus.CREATED);
+        return new ResponseEntity<>(studentService.saveUserAndStudent(student), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<?>uploadPictureStudent(@ModelAttribute FileStudentDTO fileStudentDTO) throws IOException {
+        StudentDTO studentDTO = studentService.uploadStudentPicture(fileStudentDTO.getId(), fileStudentDTO.getFile());
+        if(studentDTO != null){
+            return new ResponseEntity<>(studentDTO,HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>("student not found",HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/{id}")

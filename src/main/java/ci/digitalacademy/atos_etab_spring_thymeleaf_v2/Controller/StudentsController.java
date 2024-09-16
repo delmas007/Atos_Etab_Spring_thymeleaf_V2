@@ -50,7 +50,7 @@ public class StudentsController {
     @PostMapping
     public String saveStudent(StudentDTO student){
         student.getUser().setCreationDate(Date.from(Instant.now()));
-        studentService.save(student);
+        studentService.saveUserAndStudent(student);
         return "redirect:/students";
     }
 

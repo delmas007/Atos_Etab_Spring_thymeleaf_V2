@@ -15,4 +15,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
 //    List<User> findByCreatedDateLessThanAndRoleUserNameRole(Instant createdDate, String role);
 //    List<User> findByCreationDateLessThanAndRoleUserRole(Instant createdDate, String role);
     List<User> findByCreationDateLessThanAndRoleUserRole(Date creationDate, String roleUser_role);
+
+    Optional<User> findBySlug(String slug);
 }

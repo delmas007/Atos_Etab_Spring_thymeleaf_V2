@@ -3,12 +3,10 @@ package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Imp;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.model.Gender;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.repository.StudentRepository;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.security.AuthorityConstants;
-import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.AddressService;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.*;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Mapper.StudentMapperr;
-import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.RoleUserService;
-import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.StudentService;
-import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.UserService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.*;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.utils.SlugifyUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -16,7 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -34,7 +34,22 @@ public class StudentServiceImp implements StudentService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserService userService;
     private final RoleUserService roleUserService;
+    private final FileStorageService fileStorageService;
 //    private final StudentMapper studentMapper;
+
+    @Override
+    public StudentDTO saveUserAndStudent(StudentDTO studentDTO) {
+        studentDTO.setSlug(SlugifyUtils.generate(studentDTO.getFirstName()));
+        Set<RoleUserDTO> role = roleUserService.findByRole("USER");
+        UserDTO user = new UserDTO();
+        user.setRoleUser(role);
+//        user.setSchool(studentDTO.getUser().getSchool());
+        user.setPseudo(studentDTO.getMatricule());
+        user.setPassword(bCryptPasswordEncoder.encode(studentDTO.getMatricule()));
+        user = userService.save(user);
+        studentDTO.setUser(user);
+        return studentMapper.fromEntity(studentRepository.save(studentMapper.toEntity(studentDTO)));
+    }
 
     @Override
     public StudentDTO save(StudentDTO studentDTO) {
@@ -42,11 +57,23 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Override
+    public StudentDTO uploadStudentPicture(Long id, MultipartFile picture) throws IOException {
+        Optional<StudentDTO> one = findOne(id);
+        StudentDTO student = one.orElse(null);
+        if(student != null){
+            String upload = fileStorageService.upload(picture);
+            student.setUrlPicture(upload);
+            save(student);
+        }
+        return student;
+    }
+
+    @Override
     public StudentDTO update(StudentDTO student) {
         return findOne(student.getId()).map(existingAddress -> {
             existingAddress.setFirstName(student.getFirstName());
             existingAddress.setLastName(student.getLastName());
-            return save(existingAddress);
+            return saveUserAndStudent(existingAddress);
         }).orElseThrow(() -> new RuntimeException("Nom not found"));
     }
 
@@ -58,7 +85,7 @@ public class StudentServiceImp implements StudentService {
             studentDTO1.setGender(studentDTO1.getGender());
             studentDTO1.setMatricule(studentDTO.getMatricule());
             studentDTO1.setPhoneNumberFather(studentDTO.getPhoneNumberFather());
-            return save(studentDTO1);
+            return saveUserAndStudent(studentDTO1);
     }).orElseThrow(() -> new IllegalArgumentException("Student not found"));
     }
 
@@ -106,7 +133,7 @@ public class StudentServiceImp implements StudentService {
         StudentDTO student = modelMapper.map(registrationStudentDTO, StudentDTO.class);
         student.setUser(user);
         student.setAddress(address);
-        student = save(student);
+        student = saveUserAndStudent(student);
 
         ResponseRegisterStudentDTO response = new ResponseRegisterStudentDTO();
         response.setAddress(address);

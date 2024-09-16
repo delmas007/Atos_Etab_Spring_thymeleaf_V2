@@ -2,6 +2,7 @@ package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Imp;
 
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.repository.SchoolRepository;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.AppSettingService;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.FileStorageService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Mapper.SchoolMapper;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Mapper.SchoolMapperr;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.SchoolService;
@@ -11,7 +12,9 @@ import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.utils.SlugifyUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,6 +27,7 @@ public class SchoolServiceImp implements SchoolService {
     private final SchoolRepository schoolRepository;
     private  final AppSettingService appSettingService;
     private final SchoolMapperr schoolMapper;
+    private final FileStorageService fileStorageService;
 
 
 
@@ -37,6 +41,13 @@ public class SchoolServiceImp implements SchoolService {
         }
         return null;
 
+    }
+
+    @Override
+    public SchoolDTO save(SchoolDTO SchoolDTO, MultipartFile file) throws IOException {
+        String upload = fileStorageService.upload(file);
+        SchoolDTO.setLogo(upload);
+        return save(SchoolDTO);
     }
 
     @Override
