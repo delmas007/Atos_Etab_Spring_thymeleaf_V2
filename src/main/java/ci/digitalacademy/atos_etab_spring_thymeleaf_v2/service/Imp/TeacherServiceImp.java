@@ -2,13 +2,16 @@ package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Imp;
 
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.model.Gender;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.repository.TeacherRepository;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.*;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Mapper.TeatcherMapperr;
-import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.RoleUserService;
-import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.TeacherService;
-import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.TeacherDTO;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.*;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.utils.SlugifyUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -20,13 +23,41 @@ public class TeacherServiceImp implements TeacherService {
     private final TeacherRepository teacherRepository;
     private final TeatcherMapperr teacherMapperr;
     private final RoleUserService roleUserService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final SchoolService schoolService;
+    private final UserService userService;
+    private final FileStorageService fileStorageService;
+
+    @Override
+    public TeacherDTO saveUserAndTeacher(TeacherDTO teacherDTO) {
+        SchoolDTO schoolDTO = schoolService.getAll().stream().findFirst().orElse(null);
+        teacherDTO.setSlug(SlugifyUtils.generate(teacherDTO.getFirstName()));
+        Set<RoleUserDTO> role = roleUserService.findByRole("USER");
+        UserDTO user = new UserDTO();
+        user.setRoleUser(role);
+        user.setSchool(schoolDTO);
+        user.setPseudo(teacherDTO.getLastName());
+        user.setPassword(bCryptPasswordEncoder.encode(teacherDTO.getLastName()));
+        user = userService.save(user);
+        teacherDTO.setUser(user);
+        return teacherMapperr.fromEntity(teacherRepository.save(teacherMapperr.toEntity(teacherDTO)));
+    }
 
     @Override
     public TeacherDTO save(TeacherDTO teacherDTO) {
-        roleUserService.findOne("USER").ifPresent(roleUserDTO -> {
-            teacherDTO.getUser().setRoleUser(Set.of(roleUserDTO));
-        });
         return teacherMapperr.fromEntity(teacherRepository.save(teacherMapperr.toEntity(teacherDTO)));
+    }
+
+    @Override
+    public TeacherDTO uploadTeacherPicture(Long id, MultipartFile picture) throws IOException {
+        Optional<TeacherDTO> one = findOne(id);
+        TeacherDTO teacher = one.orElse(null);
+        if(teacher != null){
+            String upload = fileStorageService.upload(picture);
+            teacher.setUrlPicture(upload);
+            save(teacher);
+        }
+        return teacher;
     }
 
     @Override
@@ -41,7 +72,7 @@ public class TeacherServiceImp implements TeacherService {
             if (teacherDTO.getSpecialty() != null) {
                 existingAddress.setSpecialty(teacherDTO.getSpecialty());
             }
-            return save(existingAddress);
+            return saveUserAndTeacher(existingAddress);
         }).orElseThrow(() -> new RuntimeException("Nom not found"));
     }
 

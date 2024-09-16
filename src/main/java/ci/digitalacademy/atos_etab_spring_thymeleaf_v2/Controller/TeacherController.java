@@ -1,7 +1,6 @@
 package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.Controller;
 
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.TeacherService;
-import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.StudentDTO;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.TeacherDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +47,7 @@ public class TeacherController {
     @PostMapping
     public String saveProfessor(TeacherDTO professor){
         professor.getUser().setCreationDate(Date.from(Instant.now()));
-        teacherService.save(professor);
+        teacherService.saveUserAndTeacher(professor);
         return "redirect:/professors";
     }
 

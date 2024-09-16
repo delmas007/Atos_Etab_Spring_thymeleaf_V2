@@ -35,15 +35,17 @@ public class StudentServiceImp implements StudentService {
     private final UserService userService;
     private final RoleUserService roleUserService;
     private final FileStorageService fileStorageService;
+    private final SchoolService schoolService;
 //    private final StudentMapper studentMapper;
 
     @Override
     public StudentDTO saveUserAndStudent(StudentDTO studentDTO) {
+        SchoolDTO schoolDTO = schoolService.getAll().stream().findFirst().orElse(null);
         studentDTO.setSlug(SlugifyUtils.generate(studentDTO.getFirstName()));
         Set<RoleUserDTO> role = roleUserService.findByRole("USER");
         UserDTO user = new UserDTO();
         user.setRoleUser(role);
-//        user.setSchool(studentDTO.getUser().getSchool());
+        user.setSchool(schoolDTO);
         user.setPseudo(studentDTO.getMatricule());
         user.setPassword(bCryptPasswordEncoder.encode(studentDTO.getMatricule()));
         user = userService.save(user);
