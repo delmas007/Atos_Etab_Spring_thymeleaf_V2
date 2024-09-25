@@ -4,6 +4,7 @@ import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.repository.AddressReposit
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.AddressService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Mapper.AddressMapper;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.AddressDTO;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.utils.SlugifyUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class AddressServiceImp implements AddressService {
     private final AddressMapper addressMapper;
     @Override
     public AddressDTO save(AddressDTO addressDTO) {
+        addressDTO.setSlug(SlugifyUtils.generate(addressDTO.getCountry()));
         return addressMapper.fromEntity(addressRepository.save(addressMapper.toEntity(addressDTO)));
     }
 
@@ -39,6 +41,8 @@ public class AddressServiceImp implements AddressService {
 
     @Override
     public Optional<AddressDTO> findOne(Long id) {
-        return Optional.empty();
+        return addressRepository.findById(id).map(address -> {
+            return addressMapper.fromEntity(address);
+        });
     }
 }
