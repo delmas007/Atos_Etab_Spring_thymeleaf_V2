@@ -21,6 +21,7 @@ public class SecurityConfiguration {
                 .csrf(CsrfConfigurer::disable) // Désactiver la protection CSRF pour cette configuration
                 .authorizeHttpRequests((authorize) -> authorize
                                 .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
+                                .requestMatchers("/api/**").permitAll()
                                 .requestMatchers("/css/**").permitAll()
                                 .requestMatchers("/icon/**").permitAll()
                                 .requestMatchers("/js/**").permitAll()
@@ -28,10 +29,10 @@ public class SecurityConfiguration {
                                 .requestMatchers("/pdf/**").permitAll()
                                 .requestMatchers("/schools/**").permitAll()
                                 .requestMatchers("/settings/**").permitAll()
-                                .requestMatchers("/api/**").permitAll()
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
                                 .requestMatchers("/").permitAll()
+                                .requestMatchers("/users/**").permitAll()
                                 .requestMatchers("/users/**").permitAll()
                                 .anyRequest().authenticated()
                 )

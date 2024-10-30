@@ -3,8 +3,10 @@ package ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Imp;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.model.User;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.repository.UserRepository;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.Mapper.UserMapper;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.RoleUserService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.SchoolService;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.UserService;
+import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.RoleUserDTO;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.service.dto.UserDTO;
 import ci.digitalacademy.atos_etab_spring_thymeleaf_v2.utils.SlugifyUtils;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +14,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -23,11 +27,17 @@ public class UserServiceImp implements UserService {
     private final UserMapper userMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final SchoolService schoolService;
+    private final RoleUserService roleUserService;
     @Override
     public UserDTO save(UserDTO userDTO) {
         schoolService.getAll().stream().findFirst().ifPresent(schoolDTO -> {
             userDTO.setSchool(schoolDTO);
         });
+        System.out.println(userDTO.getPassword());
+        userDTO.setCreationDate(Date.from(Instant.now()));
+        userDTO.setActive(true);
+        Set<RoleUserDTO> role = roleUserService.findByRole("USER");
+        userDTO.setRoleUser(role);
         userDTO.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
         userDTO.setSlug(SlugifyUtils.generate(userDTO.getPseudo()));
         return userMapper.fromEntity(userRepository.save(userMapper.toEntity(userDTO)));
